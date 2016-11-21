@@ -1,0 +1,19 @@
+﻿#userimge {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    vertical-align: middle;
+}
+.ItemRight 
+{
+    line-height: 80px;
+    vertical-align: middle;
+    height: 80px;
+}
+.ItemRight>span {
+    vertical-align: middle;
+    height: 100%;
+    display: inline-block;
+}

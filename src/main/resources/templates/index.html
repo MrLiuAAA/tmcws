@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>天目</title>
+<meta name="renderer" content="webkit|ie-comp|ie-stand"/>
+    <link rel="stylesheet" th:href="@{/css/default.css}" />
+    <script th:src="@{/js/jquery-1.8.3.min.js}"></script>
+</head>
+  <div style="width: 100%;">
+       <div id="MainLeft">
+           <div id="UInfo">
+               <div id="UInfo-top">
+                   <img class="userImage" src="/images/huge.jpg" th:src="@{/images/huge.jpg}" alt="用户头像"/>
+                   <!--/*@thymesVar id="currentUser" type="com.qqd.model.User"*/-->
+                   <div id="UserName" th:text="${currentUser.getUsername()}"></div>
+               </div>
+               <div id="StateInfo-bottom">
+                   <ul>
+                       <li id="_CarManage" class="verLine" data="CarManage"><div>绑定</div><!--/*@thymesVar id="bingNum" type="java.lang.String"*/-->
+                       <div class="divNum" th:text="${bingNum}">0</div></li>
+                       <!--/*@thymesVar id="alertNum" type="java.lang.String"*/-->
+                       <li id="_SetGuard" class="verLine" data="SetGuard"><div>设防</div><div class="divNum" th:text="${alertNum}">0</div></li>
+                       <li id="_LostGuard" data="SetGuard"><div>失效</div><!--/*@thymesVar id="lostNum" type="java.lang.String"*/-->
+                       <div class="divNum" th:text="${lostNum}">0</div></li>
+                   </ul>
+               </div>
+           </div>
+           <div id="FuncInfo">
+               <ul class="FuncMenu">
+                   <li class="menuNormal menuActive" id="/backstage/position"><span class="Span-left"><img src="/images/position-w.png" alt="position" />车辆定位</span><span class="Span-right">></span></li>
+                   <li class="menuNormal" id="/backstage/positionHistory"><span class="Span-left"><img src="/images/hisposition-g.png" alt="hisposition" />历史轨迹</span><span class="Span-right">></span></li>
+                   <li class="menuNormal" id="/backstage/setGuard"><span class="Span-left" style="letter-spacing: 40px;"><img src="/images/setguard-g.png" alt="setguard"/>设防</span><span class="Span-right">></span></li>
+                   <li class="menuNormal" id="/backstage/carManage"><span class="Span-left"><img src="/images/car-g.png" alt="car" />车辆管理</span><span class="Span-right">></span></li>
+               </ul>
+           </div>
+           <div id="SettingInfo">
+               <ul class="FuncMenu">
+                   <li class="menuNormal" id="PersonalInfo"><span class="Span-left"><img src="/images/info-g.png" alt="info"/>个人资料</span><span class="Span-right">></span></li>
+                   <li class="menuNormal" id="MessageInfo"><span class="Span-left"><img src="/images/msg-g.png" alt="msg" />消息推送</span><span class="Span-right">></span></li>
+                   <li class="menuNormal" id="AboutUs"><span class="Span-left"><img src="/images/about-g.png" alt="about" />关于我们</span><span class="Span-right">></span></li>
+               </ul>
+           </div>
+           <div id="exitbtn">
+               <a th:href="@{/system_logout}">退出账号</a>
+           </div>
+       </div>
+    <div id="Main">
+      <iframe name="mainFrame" id="mainFrame" src="/backstage/position" width="100%" height="1080px"  scrolling="no"></iframe>
+    </div>
+    </div>
+<body>
+</body>
+</html>
+<script type="text/javascript">
+    $(function () {
+        //$("#MainLeft").height($(window).height());
+       // $("#Main").height($(window).height());
+        $("#Main").width($(window).width() - 310);
+       $("#mainFrame").attr("src","/backstage/position");
+        $("#UserName").click(function() {
+            location.href = "PersonalInfo.html";
+        });
+
+        $(".FuncMenu li").click(function() {
+           // alert($(this).attr("data"));
+            $("#mainFrame").attr("src",$(this).attr("id"));
+			$(".menuActive img").attr("src","/images/"+$(".menuActive img").attr("alt")+"-g.png");
+			
+			 $(".FuncMenu li").removeClass("menuActive");
+            $(this).addClass("menuActive");
+            $(this).find("img").attr("src","/images/"+$(".menuActive img").attr("alt")+"-w.png");
+        });
+        $("#StateInfo-bottom li").click(function () {
+            $("#mainFrame").attr("src",$(this).attr("data"));
+			$(".FuncMenu li").removeClass("menuActive");
+			$("#"+$(this).attr("data")).addClass("menuActive");
+			
+			$(this).find("img").attr("src","/images/"+$(".menuActive img").attr("alt")+"-w.png");
+        });
+    });
+</script>

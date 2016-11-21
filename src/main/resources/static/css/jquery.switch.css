@@ -1,0 +1,31 @@
+﻿    .switch-btn {
+            width: 90px;
+            height: 40px;
+            -moz-border-radius: 40px;
+            border-radius: 40px;
+            -webkit-border-radius: 40px;
+            background-color: #c5c5c5;
+            display: block;
+            position: relative;
+        }
+        .switch-inner-btn {
+            width: 38px;
+            height: 38px;
+            margin: 1px 1px;
+            background-color: white;
+            border-radius: 38px;
+            display: block;
+            position: absolute;
+        }
+        .switch-on {
+            background-color: #31B5AC;
+        }
+        .switch-off {
+            background-color: #c5c5c5;
+        }
+        .switch-inner-btn-on {
+            right: 0px;
+        }
+        .switch-inner-btn-off {
+            left: 0px;
+        }

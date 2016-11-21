@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<!-- 开启驼峰命名规则 -->
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+		<!-- 打印查询语句 -->
+        <setting name="logImpl" value="LOG4J" />
+	</settings>
+	<typeAliases>
+		<!-- <typeAlias type="com.mxx.domain.follow.lab.LabItem" alias="LabItem"/>
+		<typeAlias type="com.mxx.domain.follow.up.FollowupItem" alias="FollowupItem"/>
+		<typeAlias type="com.mxx.domain.follow.up.FollowupInfo" alias="FollowupInfo"/> -->
+	</typeAliases>
+	<plugins>
+		<plugin interceptor="com.qqd.mybatis.PageInterceptor">
+			<property name="databaseType" value="mysql" />
+		</plugin>
+	</plugins>
+
+</configuration>

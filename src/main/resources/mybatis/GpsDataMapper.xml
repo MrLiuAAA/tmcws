@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qqd.dao.GpsDataDao">
+
+	
+	
+	<resultMap type="com.qqd.model.TrajectoryInfo" id="trajectoryInfoMap" autoMapping="true">
+		
+		<result column="sum_speed" property="sumSpeed"/>
+		<result column="max_speed" property="maxSpeed"/>
+		<result column="min_speed" property="minSpeed"/>
+		<result column="count_record" property="recordNum"/>
+	</resultMap>
+	
+	<select id="getTrajectory" resultType="com.qqd.model.GpsData">
+	
+		SELECT sn,timestamp,latitude,longitude,speed,direction
+		
+		FROM g_data 
+		
+		WHERE sn = #{sn}
+			  AND speed != '000' 
+			  AND `timestamp` BETWEEN #{startTime} AND #{endTime}
+	
+		order by `timestamp` asc
+	</select>
+	
+	
+	
+	<select id="getTrajectoryTotalInfo" resultMap="trajectoryInfoMap">
+		SELECT
+			SUM(speed) AS sum_speed,
+			MAX(speed) AS max_speed,
+			MIN(speed) AS min_speed,
+			count(id)  AS count_record
+		FROM
+			g_data
+		WHERE
+			sn = #{sn}
+		AND speed != '000'
+		AND `timestamp` BETWEEN #{startTime} AND #{endTime}
+		
+		
+	</select>
+	
+	
+</mapper>
