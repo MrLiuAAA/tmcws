@@ -1,34 +1,22 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>车辆设防</title>
-<script src="JS/jquery-1.11.1.min.js" type="text/javascript"></script>
-<link href="CSS/jquery.switch.css" rel="stylesheet" type="text/css" />
-    <script src="JS/jquery.switch.js" type="text/javascript"></script>
-    <link href="CSS/SetGuard.css" rel="stylesheet" type="text/css" />
+<script th:src="@{/JS/jquery-1.11.1.min.js}" type="text/javascript"></script>
+<link th:href="@{/CSS/jquery.switch.css}" rel="stylesheet" type="text/css" />
+    <script th:src="@{/JS/jquery.switch.js}" type="text/javascript"></script>
+    <link th:href="@{/CSS/SetGuard.css}" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
 <form>
         <div id="GuardContiner">
-            <div class="GuardItem">
-                <div class="ItemLeft"><div class="ItemLeft-CarName">法拉利一号</div><div class="ItemLeft-CarState">车辆已失效</div></div>
-                <div class="ItemRight"><input type="checkbox" id="car1" checked="checked" /></div>
-            </div>
-             <div class="GuardItem">
-                <div class="ItemLeft"><div class="ItemLeft-CarName">法拉利二号</div><div class="ItemLeft-CarState">自动设防已关闭</div></div>
-                <div class="ItemRight"><input type="checkbox" id="car2"  /></div>
-            </div> 
-             <div class="GuardItem">
-                <div class="ItemLeft"><div class="ItemLeft-CarName">法拉利一三号</div><div class="ItemLeft-CarState">自动设防已开启</div></div>
-                <div class="ItemRight"><input type="checkbox" id="car3" checked="checked" /></div>
-            </div>
         </div>
     </form>
-
-    <script>
-     
+   <script th:src="@{/js/system/guard.js}"></script>
+  <script>
       $(function() {
           var btn = $("#car1").SwitchButton();
 		  btn.click(function(){
