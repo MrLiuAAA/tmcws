@@ -2,7 +2,8 @@
 {
     margin: 0px 0px;
     padding: 0px 0px;
-	min-width:1580px;
+	min-width:1280px;
+    font-family: "微软雅黑";
 }
 * {
     margin: 0px 0px;
@@ -22,13 +23,11 @@
     height: 1080px;
     position: relative;
     float: left;
-    height: 1080px;
 }
 #Main {
     float: left;
     background-color:azure;
-	width:1280px;
-	min-width:1280px;
+	min-width:990px;
 }
 #UInfo {
     height: 300px;
@@ -61,22 +60,27 @@
     margin: 0px auto;
     text-align: center;
     line-height: 30px;
+	
 } 
 .verLine {
     border-right: 1px solid white;
     width: 98px;
    
 }
+.divNum_title{
+	font-size:15px;
+	}
+	
 .divNum {
-    font-size: 40px;
+    font-size: 33px;
     line-height: 40px;
     font-weight: bold;
 }
 .userImage 
 {
-    width: 120px;
-    height: 120px;
-    border-radius: 120px;
+    width: 116px;
+    height: 116px;
+    border-radius: 116px;
    
 }
 #UInfo-top 
@@ -90,7 +94,7 @@
 {
     margin: 0px auto;
     color: white;
-    font-size: 30px;
+    font-size: 21px;
     margin-top: 20px;
     margin-bottom: 30px;
     letter-spacing: 10px;
@@ -103,8 +107,8 @@
 }
 #SettingInfo {
      width: 100%;
-     height: 200px;
-    margin-top: 220px;
+     height: 175px;
+    margin-top: 245px;
 }
 .MenuItem-focus {
     background-color: #31B5AC;
@@ -116,8 +120,8 @@
 }
 .FuncMenu li {
     width: 100%;
-    height: 70px;
-    line-height: 70px;
+    height: 62px;
+    line-height: 62px;
     border-bottom: 1px solid #A8A8A8;
 }
 .FuncMenu img {
@@ -134,7 +138,7 @@
     width: 100%;
     text-decoration: none;
     color: #A8A8A8;
-    font-size: 22px;
+    font-size: 21px;
     line-height: 70px;
     display: block;
     vertical-align: middle;

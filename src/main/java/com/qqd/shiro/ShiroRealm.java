@@ -1,9 +1,7 @@
 package com.qqd.shiro;
 
 
-import com.alibaba.fastjson.JSON;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -18,11 +16,11 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.alibaba.fastjson.JSON;
 import com.qqd.Const;
 import com.qqd.model.User;
 import com.qqd.service.UserService;
 import com.qqd.utils.MD5Util;
-import com.sun.tools.internal.xjc.model.SymbolSpace;
 
 
 

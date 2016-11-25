@@ -179,7 +179,6 @@ public class BackstageController extends BaseController<User> {
 				HashMap<String, String> map = new HashMap<>();
 				map.put("name", car.getName()); /// 名字
 				map.put("sn", car.getSn()); /// 标识
-
 				rList.add(map);
 			}
 		}
@@ -247,6 +246,33 @@ public class BackstageController extends BaseController<User> {
 	@RequestMapping("setGuard")
 	public String setGuard(Model model) {
 		return "setGuard";
+	}
+	/**
+	 * 获取我的车辆
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "getmycarstatus", method = RequestMethod.POST)
+	@ResponseBody
+	public AjaxRes getmycarstatus(Model model) {
+		AjaxRes ar = getAjaxRes();
+		User currentUser = AccountShiroUtil.getCurrentUser();
+		/// 查询出当前车辆的位置
+		List<Car> cars = carService.findCarsByUserName(currentUser.getUsername());
+
+		List<Map<String, String>> rList = new ArrayList<>();
+		if (cars != null) {
+			for (Car car : cars) {
+				HashMap<String, String> map = new HashMap<>();
+				map.put("name", car.getName()); /// 名字
+				map.put("sn", car.getSn()); /// 标识
+				map.put("status", car.getStatus());//设防状态
+				rList.add(map);
+			}
+		}
+		/// 我拥有的车辆
+		ar.setSucceed(rList);
+		return ar;
 	}
 
 	/**

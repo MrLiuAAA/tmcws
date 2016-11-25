@@ -1,4 +1,7 @@
-﻿#div-left {
+﻿body{
+    font-family: "微软雅黑";
+}
+#div-left {
     float: left;
     width: 130px;
     height: 1080px;
