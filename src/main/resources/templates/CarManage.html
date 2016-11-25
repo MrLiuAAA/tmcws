@@ -1,15 +1,16 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>天目-车辆管理</title>
-<link href="CSS/EditGuard.css" rel="stylesheet" type="text/css" />
-<link href="CSS/PersonalInfo.css" rel="stylesheet" type="text/css" />
-<link href="CSS/CarManage.css" rel="stylesheet" type="text/css" />
+<link th:href="@{/CSS/EditGuard.css}" rel="stylesheet" type="text/css" />
+<link th:href="@{/CSS/PersonalInfo.css}" rel="stylesheet" type="text/css" />
+<link th:href="@{/CSS/CarManage.css}" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
-<div id="div-left"> <a class="backBtn" href="AddCar.html"><img width="37px" height="37px" src="IMAGES/add.png"/></a> </div>
+<div id="div-left"> <a class="backBtn" href="AddCar.html"><img width="37px" height="37px" th:src="@{/IMAGES/add.png}"/></a> </div>
 <div id="div-right">
   <div class="div-item">
     <div class="div-1">
@@ -27,7 +28,7 @@
       <div>当日里程：20km</div>
       <div>总里程：180km</div>
     </div>
-    <div class="div-4"> <span></span> <a><img src="images/edit.png" /></a> <a><img src="images/battery-red.png" /></a> <a><img src="images/restart.png" /></a> <a><img src="images/delete.png" /></a> </div>
+    <div class="div-4"> <span></span> <a><img th:src="@{/images/edit.png}" /></a> <a><img th:src="@{/images/battery-red.png}" /></a> <a><img src="images/restart.png" /></a> <a><img src="images/delete.png" /></a> </div>
   </div>
   <div class="div-item">
     <div class="div-1">
@@ -45,7 +46,7 @@
       <div>当日里程：20km</div>
       <div>总里程：180km</div>
     </div>
-    <div class="div-4"> <span></span> <a><img src="images/edit.png" /></a> <a><img src="images/battery-red.png" /></a> <a><img src="images/restart.png" /></a> <a><img src="images/delete.png" /></a> </div>
+    <div class="div-4"> <span></span> <a><img th:src="@{/images/edit.png}" /></a> <a><img th:src="@{/images/battery-red.png}" /></a> <a><img src="images/restart.png" /></a> <a><img src="images/delete.png" /></a> </div>
   </div>
 </div>
 </body>
