@@ -247,6 +247,38 @@ public class BackstageController extends BaseController<User> {
 	public String setGuard(Model model) {
 		return "setGuard";
 	}
+
+	/**
+	 * 编辑 设防
+	 * 
+	 * @param model
+	 * @return
+	 */
+	
+	@RequestMapping("editGuard")
+	public String editGuard(Model model) {
+		return "editGuard";
+	}
+
+
+	/**
+	 * 修改 设防状态
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "changeStatus", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> changeStatus(String alertstatus, String sn) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		User currentUser = AccountShiroUtil.getCurrentUser();
+		/// 查询出当前车辆的位置
+		String ret = carService.changeCarStatus(currentUser.getUsername(), alertstatus, sn);
+		map.put("result", ret);
+		System.out.println(map);
+		return map;
+	}
+
 	/**
 	 * 获取我的车辆
 	 * 
@@ -266,7 +298,12 @@ public class BackstageController extends BaseController<User> {
 				HashMap<String, String> map = new HashMap<>();
 				map.put("name", car.getName()); /// 名字
 				map.put("sn", car.getSn()); /// 标识
-				map.put("status", car.getStatus());//设防状态
+				map.put("status",
+						"已失效".equals(car.getStatus()) ? "已失效" : ("Y".equals(car.getAlertstatus()) ? "设防状态" : "未设防状态"));
+				map.put("alertphone", car.getAlertphone());
+				map.put("shockalert", car.getShockalert());
+				map.put("cuttinglinealert", car.getCuttinglinealert());
+				map.put("autoalert", car.getAutoalert());
 				rList.add(map);
 			}
 		}
@@ -283,5 +320,47 @@ public class BackstageController extends BaseController<User> {
 	@RequestMapping("carManage")
 	public String carManage(Model model) {
 		return "carManage";
+	}
+
+	/**
+	 * 添加 车辆
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("addcar")
+	public String addcar(Model model) {
+		return "addcar";
+	}
+
+	/**
+	 * 获取我的车辆详细信息
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "getmycarManage", method = RequestMethod.POST)
+	@ResponseBody
+	public AjaxRes getmycarManage(Model model) {
+		AjaxRes ar = getAjaxRes();
+		User currentUser = AccountShiroUtil.getCurrentUser();
+		/// 查询出当前车辆的位置
+		List<Car> cars = carService.findCarsByUserName(currentUser.getUsername());
+
+		List<Map<String, String>> rList = new ArrayList<>();
+		if (cars != null) {
+			for (Car car : cars) {
+				HashMap<String, String> map = new HashMap<>();
+				map.put("name", car.getName()); /// 名字
+				map.put("sn", car.getSn()); /// 标识
+				map.put("latitude", car.getLatitude());/// 维度
+				map.put("longitude", car.getLongitude());/// 经度
+				map.put("status",
+						"已失效".equals(car.getStatus()) ? "已失效" : ("Y".equals(car.getAlertstatus()) ? "设防状态" : "未设防状态"));
+				rList.add(map);
+			}
+		}
+		/// 我拥有的车辆
+		ar.setSucceed(rList);
+		return ar;
 	}
 }

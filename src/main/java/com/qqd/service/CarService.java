@@ -32,8 +32,6 @@ package com.qqd.service;
 import java.util.List;
 
 import com.qqd.model.Car;
-import com.qqd.model.GpsData;
-import com.qqd.model.User;
 
 /**
 * @author 作者 E-mail:
@@ -47,14 +45,15 @@ import com.qqd.model.User;
  * @Date 2016年11月1日 上午8:41:45
  * @version 1.0.0
  */
-public interface CarService{
+public interface CarService {
 
 	/**
-     * 根据登录帐号查找
-     * @return
-     */
-    public List<Car> findCarsByUserName(String userName);
+	 * 根据登录帐号查找
+	 * 
+	 * @return
+	 */
+	public List<Car> findCarsByUserName(String userName);
 
-	
- 
+	public String changeCarStatus(String userName, String alertstatus,String sn);
+
 }

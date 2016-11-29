@@ -35,9 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.qqd.dao.CarDao;
-import com.qqd.dao.UserDao;
 import com.qqd.model.Car;
-import com.qqd.model.User;
 
 /**
 * @author 作者 E-mail:
@@ -56,15 +54,28 @@ public class CarServiceImp implements CarService {
 
 	@Autowired
 	CarDao carDao;
-	
-	/* (非 Javadoc)
-	 * Description:
+
+	/*
+	 * (非 Javadoc) Description:
+	 * 
 	 * @see com.qqd.service.CarService#findCarsByUserName(java.lang.String)
 	 */
 	@Override
 	public List<Car> findCarsByUserName(String userName) {
-		
+
 		return carDao.findCarsByUserName(userName);
 	}
-	
+
+	@Override
+	public String changeCarStatus(String userName, String alertstatus, String sn) {
+		// TODO Auto-generated method stub
+		if (alertstatus.equals("true")) {
+			alertstatus = "Y";
+		} else {
+			alertstatus = "N";
+		}
+		carDao.changeCarStatus(userName, alertstatus, sn);
+		return "success";
+	}
+
 }

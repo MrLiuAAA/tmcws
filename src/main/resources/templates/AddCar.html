@@ -1,43 +1,43 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>添加设备</title>
- <link href="CSS/EditGuard.css" rel="stylesheet" type="text/css" />
-    <link href="CSS/PersonalInfo.css" rel="stylesheet" type="text/css" />
-    <style>
-	input{
-		vertical-align:middle;	
-	}
-	</style>
+<link th:href="@{/CSS/EditGuard.css}" rel="stylesheet" type="text/css" />
+<link th:href="@{/CSS/PersonalInfo.css}" rel="stylesheet"
+	type="text/css" />
+<style>
+input {
+	vertical-align: middle;
+}
+</style>
 </head>
 
 <body>
 
 
-<div id="div-left">
-<a class="backBtn" href="CarManage.html"><img width="30px" height="36px" src="IMAGES/back.png"/></a>
-<a class="backBtn" href=""><img width="35px" height="35px" src="IMAGES/save.png"/></a>
-</div>
-    <div id="div-right">
-        <div class="GuardItem">
-            <div class="ItemLeft">
-                车辆名称
-            </div>
-            <div class="ItemRight">
-               <span></span><input type="text"  value="法拉利一号" />
-            </div>
-        </div>
-        <div class="GuardItem">
-            <div class="ItemLeft">
-                设备码
-            </div>
-            <div class="ItemRight">
-              <span></span><input type="text"   value="8211111111"/>
-            </div>
-        </div>
-       
-    </div>
-    
+	<div id="div-left">
+		<a class="backBtn" th:href="@{/backstage/carManage}"><img
+			width="30px" height="36px" th:src="@{/IMAGES/back.png}" /></a> <a
+			class="backBtn" href=""><img width="35px" height="35px"
+			th:src="@{/IMAGES/save.png}" /></a>
+	</div>
+	<div id="div-right">
+		<div class="GuardItem">
+			<div class="ItemLeft">车辆名称</div>
+			<div class="ItemRight">
+				<span></span><input type="text" value="法拉利一号" />
+			</div>
+		</div>
+		<div class="GuardItem">
+			<div class="ItemLeft">设备码</div>
+			<div class="ItemRight">
+				<span></span><input type="text" value="8211111111" />
+			</div>
+		</div>
+
+	</div>
+
 </body>
 </html>

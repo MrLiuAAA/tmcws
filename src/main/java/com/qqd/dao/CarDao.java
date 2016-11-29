@@ -35,7 +35,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.qqd.model.Car;
-import com.qqd.model.User;
 
 
 /**
@@ -48,4 +47,6 @@ import com.qqd.model.User;
 @Mapper
 public interface CarDao  {
 	public List<Car> findCarsByUserName(@Param("username")String username);
+	
+	public void changeCarStatus(@Param("username")String username,@Param("alertstatus")String alertstatus,@Param("sn")String sn);
 }

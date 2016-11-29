@@ -8,17 +8,19 @@
 <link href="@{/CSS/jquery.switch.css}" rel="stylesheet" type="text/css" />
 <script src="@{/JS/jquery-1.11.1.min.js}" type="text/javascript"></script>
 <script src="@{/JS/jquery.switch.js}" type="text/javascript"></script>
+<script th:src="@{js/jy.main.js}"></script>
 </head>
 
 <body>
+    
 	<div id="div-left">
-		<a class="backBtn" th:href="@{SetGuard.html}"><img th:src="@{/images/back.png}"
-			alt="返回" /></a>
+		<a class="backBtn" th:href="@{/backstage/setGuard}"><img
+			th:src="@{/images/back.png}" alt="返回" /></a>
 	</div>
 	<div id="div-right">
 		<div class="GuardItem">
 			<div class="ItemLeft">绑定报警号码</div>
-			<div class="ItemRight">12345678912></div>
+			<div class="ItemRight" th:text="${alertphone}"></div>
 		</div>
 		<div class="GuardItem">
 			<div class="ItemLeft">震动报警</div>
