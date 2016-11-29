@@ -54,6 +54,6 @@ public interface CarService {
 	 */
 	public List<Car> findCarsByUserName(String userName);
 
-	public String changeCarStatus(String userName, String alertstatus,String sn);
+	public Boolean changeCarStatus(String userName, String alertstatus,String sn);
 
 }

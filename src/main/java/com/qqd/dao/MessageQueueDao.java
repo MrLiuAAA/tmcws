@@ -29,29 +29,20 @@
  *****************************************************************/
 package com.qqd.dao;
 
-import java.util.List;
-
+import com.qqd.model.Car;
+import com.qqd.model.MessageQueue;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.qqd.model.Car;
+import java.util.List;
 
 
-/**
- * @ClassName UserDao
- * @Description TODO(这里用一句话描述这个类的作用)
- * @author liujianyang
- * @Date 2016年11月1日 上午8:50:20
- * @version 1.0.0
- */
 @Mapper
-public interface CarDao  {
-	public List<Car> findCarsByUserName(@Param("username")String username);
-	
-	public Integer changeCarStatus(@Param("username")String username,@Param("alertstatus")String alertstatus,@Param("sn")String sn);
+public interface MessageQueueDao {
 
 
-	public Car findCarBySn(@Param("sn")String sn);
+    public Integer insertMessageQueue(MessageQueue messageQueue);
 
+    public Integer deletetMessageQueueBySnAndCodeAndCmd(@Param("sn") String sn,@Param("code") String code,@Param("cmd") String cmd);
 
 }

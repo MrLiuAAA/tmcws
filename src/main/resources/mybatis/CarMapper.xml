@@ -9,10 +9,19 @@
 		WHERE t.username = #{username}
 	</select>
 
-	<select id="changeCarStatus" resultType="com.qqd.model.Car">
+	<select id="findCarBySn" resultType="com.qqd.model.Car">
+		SELECT t.*
+		FROM g_car
+		t
+		WHERE t.sn = #{sn}
+	</select>
+
+
+
+	<update id="changeCarStatus">
 	update g_car g
 	set g.alertstatus =#{alertstatus}
 	where g.username =#{username} and g.sn =#{sn}
-	</select>
+	</update>
 
 </mapper>

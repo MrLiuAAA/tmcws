@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qqd.dao.MessageQueueDao">
+
+
+	<insert id="insertMessageQueue" parameterType="com.qqd.model.MessageQueue" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+
+		INSERT INTO g_message_queue (sn,code,cmd,message) VALUES (#{sn},#{code},#{cmd},#{message})
+
+	</insert>
+
+
+	<delete id="deletetMessageQueueBySnAndCodeAndCmd">
+		DELETE FROM g_message_queue WHERE sn = #{sn} and code = #{code} and cmd = #{cmd}
+	</delete>
+
+</mapper>

@@ -29,13 +29,19 @@
  *****************************************************************/
 package com.qqd.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import com.qqd.dao.MessageQueueDao;
+import com.qqd.model.MessageQueue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.qqd.dao.CarDao;
 import com.qqd.model.Car;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
 * @author 作者 E-mail:
@@ -55,6 +61,9 @@ public class CarServiceImp implements CarService {
 	@Autowired
 	CarDao carDao;
 
+	@Autowired
+	MessageQueueDao messageQueueDao;
+
 	/*
 	 * (非 Javadoc) Description:
 	 * 
@@ -67,15 +76,52 @@ public class CarServiceImp implements CarService {
 	}
 
 	@Override
-	public String changeCarStatus(String userName, String alertstatus, String sn) {
-		// TODO Auto-generated method stub
+	@Transactional
+	public Boolean changeCarStatus(String userName, String alertstatus, String sn) {
+
+
+		Car car = carDao.findCarBySn(sn);
+
 		if (alertstatus.equals("true")) {
 			alertstatus = "Y";
 		} else {
 			alertstatus = "N";
 		}
-		carDao.changeCarStatus(userName, alertstatus, sn);
-		return "success";
+		Integer r = carDao.changeCarStatus(userName, alertstatus, sn);
+
+		/**
+		 *   在这里  插入 消息列队
+		 */
+
+		/**
+		 * 设防：*HQ,8696010765,SCF,113032,0,0#
+		 * 撤防：*HQ,8696010765,SCF,113032,1,0#
+		 */
+		Date date=new Date();
+		DateFormat format=new SimpleDateFormat("HHmmss");
+		String time = format.format(date);
+		String code = car.getCode();
+		String cmd = "SCF";
+		String message = "*"+code+"," + sn + ","+cmd+"," + time+","+
+				("Y".equalsIgnoreCase(alertstatus)?"0":"1")+",0#";
+
+		MessageQueue messageQueue = new MessageQueue();
+
+		messageQueue.setSn(sn);
+		messageQueue.setCode(code);
+		messageQueue.setCmd(cmd);
+		messageQueue.setMessage(message);
+
+
+		/**
+		 * 先从表中 删除 对同一个设备发送的同一种类型的 数据
+		 *
+		 * 防止用户设置某一个设置后，还未生效的期间  又进行同样的设置
+		 */
+		messageQueueDao.deletetMessageQueueBySnAndCodeAndCmd(sn,code,cmd);
+		messageQueueDao.insertMessageQueue(messageQueue);
+
+		return r>0&&messageQueue.getId()!=null;
 	}
 
 }

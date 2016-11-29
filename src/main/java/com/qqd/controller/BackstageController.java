@@ -255,8 +255,13 @@ public class BackstageController extends BaseController<User> {
 	 * @return
 	 */
 	
-	@RequestMapping("editGuard")
-	public String editGuard(Model model) {
+	@RequestMapping(value="editGuard",method = RequestMethod.GET)
+	public String editGuard(Model model,String alertphone) {
+
+
+		System.out.println("alertphone====="+alertphone);
+		model.addAttribute("alertphone",alertphone);
+
 		return "editGuard";
 	}
 
@@ -264,7 +269,7 @@ public class BackstageController extends BaseController<User> {
 	/**
 	 * 修改 设防状态
 	 * 
-	 * @param model
+	 * @param
 	 * @return
 	 */
 	@RequestMapping(value = "changeStatus", method = RequestMethod.POST)
@@ -273,8 +278,8 @@ public class BackstageController extends BaseController<User> {
 		Map<String, Object> map = new HashMap<String, Object>();
 		User currentUser = AccountShiroUtil.getCurrentUser();
 		/// 查询出当前车辆的位置
-		String ret = carService.changeCarStatus(currentUser.getUsername(), alertstatus, sn);
-		map.put("result", ret);
+		Boolean ret = carService.changeCarStatus(currentUser.getUsername(), alertstatus, sn);
+		map.put("result", ret?"success":"failure");
 		System.out.println(map);
 		return map;
 	}
