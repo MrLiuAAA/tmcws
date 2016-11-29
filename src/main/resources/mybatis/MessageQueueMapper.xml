@@ -8,8 +8,6 @@
 		INSERT INTO g_message_queue (sn,code,cmd,message) VALUES (#{sn},#{code},#{cmd},#{message})
 
 	</insert>
-
-
 	<delete id="deletetMessageQueueBySnAndCodeAndCmd">
 		DELETE FROM g_message_queue WHERE sn = #{sn} and code = #{code} and cmd = #{cmd}
 	</delete>
