@@ -9,7 +9,34 @@ $(function(){
 	 $.ajax({type:'POST',url:'/backstage/getmycarManage',data:{},
         dataType:'json',success:function(data, textStatus) {
         	var result=data.obj;
+        	// 先清空
+        	$("#div-right")。html();
         	$.each(result, function (i, item) {
+        		
+        		
+        		$("#div-right").append();
+        		
+        		'<div class="div-item">'
+        	   +'<div class="div-1">'
+        	      +'<div class="ItemTitle"> 法拉利一号 </div>'
+        	      +'<div>1234567890</div>'
+        	    +'</div>'
+        	    +'<div class="div-2">'
+        	      +'<div style="">'
+        	        +'<div>状态：已失效 已断电</div>'
+        	        +'<div>位置：浙江省杭州市江干区就包三餐西园1506号</div>'
+        	      +'</div>'
+        	    +'</div>'
+        	    +'<div class="div-3">'
+        	    +'<div>速度：15km/h</div>'
+        	    +'<div>当日里程：20km</div>'
+        	    +'<div>总里程：180km</div>'
+        	    +'</div>'
+        	    +'<div class="div-4"> <span></span> <a>
+        	    +''<img src="images/edit.png" /></a> <a><img src="images/battery-red.png" /></a> <a><img src="images/restart.png" /></a> <a><img src="images/delete.png" /></a> </div>
+        	    +'</div>'
+        		
+        		
 				$("<div class=\"div-item\" id=\"div-item\"></div>").appendTo($("#div-right"));
 				$("<div class=\"div-1\" id=\"div-1\"></div>").appendTo($("#div-item"));
 				$("<div class=\"div-2\" id=\"div-2\"></div>").appendTo($("#div-item"));

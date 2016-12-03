@@ -74,54 +74,60 @@ public class CarServiceImp implements CarService {
 
 		return carDao.findCarsByUserName(userName);
 	}
+	
+	@Override
+	public Car findCarBySn(String sn) {
+
+		return carDao.findCarBySn(sn);
+	}
 
 	@Override
 	@Transactional
-	public Boolean changeCarStatus(String userName, String alertstatus, String sn) {
-
+	public Boolean changeCarStatus(String userName, String status, String sn, String fieldName) {
 
 		Car car = carDao.findCarBySn(sn);
 
-		if (alertstatus.equals("true")) {
-			alertstatus = "Y";
-		} else {
-			alertstatus = "N";
-		}
-		Integer r = carDao.changeCarStatus(userName, alertstatus, sn);
+		Integer r = carDao.changeCarStatus(userName, status, sn, fieldName);
 
 		/**
-		 *   在这里  插入 消息列队
+		 * 在这里 插入 消息列队
 		 */
-
-		/**
-		 * 设防：*HQ,8696010765,SCF,113032,0,0#
-		 * 撤防：*HQ,8696010765,SCF,113032,1,0#
-		 */
-		Date date=new Date();
-		DateFormat format=new SimpleDateFormat("HHmmss");
-		String time = format.format(date);
-		String code = car.getCode();
-		String cmd = "SCF";
-		String message = "*"+code+"," + sn + ","+cmd+"," + time+","+
-				("Y".equalsIgnoreCase(alertstatus)?"0":"1")+",0#";
-
 		MessageQueue messageQueue = new MessageQueue();
 
-		messageQueue.setSn(sn);
-		messageQueue.setCode(code);
-		messageQueue.setCmd(cmd);
-		messageQueue.setMessage(message);
+		if (fieldName != null && fieldName.equalsIgnoreCase("alertstatus")) {
+			/**
+			 * 设防：*HQ,8696010765,SCF,113032,0,0#
+			 * 撤防：*HQ,8696010765,SCF,113032,1,0#
+			 */
+			Date date = new Date();
+			DateFormat format = new SimpleDateFormat("HHmmss");
+			String time = format.format(date);
+			String code = car.getCode();
+			String cmd = "SCF";
+			String message = "*" + code + "," + sn + "," + cmd + "," + time + ","
+					+ ("Y".equalsIgnoreCase(status) ? "0" : "1") + ",0#";
 
+			messageQueue.setSn(sn);
+			messageQueue.setCode(code);
+			messageQueue.setCmd(cmd);
+			messageQueue.setMessage(message);
 
-		/**
-		 * 先从表中 删除 对同一个设备发送的同一种类型的 数据
-		 *
-		 * 防止用户设置某一个设置后，还未生效的期间  又进行同样的设置
-		 */
-		messageQueueDao.deletetMessageQueueBySnAndCodeAndCmd(sn,code,cmd);
-		messageQueueDao.insertMessageQueue(messageQueue);
+			/**
+			 * 先从表中 删除 对同一个设备发送的同一种类型的 数据
+			 *
+			 * 防止用户设置某一个设置后，还未生效的期间 又进行同样的设置
+			 */
+			messageQueueDao.deletetMessageQueueBySnAndCodeAndCmd(sn, code, cmd);
+			messageQueueDao.insertMessageQueue(messageQueue);
+		}
 
-		return r>0&&messageQueue.getId()!=null;
+		return r > 0;
+	}
+
+	@Override
+	public Boolean deleteCar(String userName, String sn) {
+		int r = carDao.deleteCar(userName, sn);
+		return r > 0;
 	}
 
 }

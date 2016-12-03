@@ -47,6 +47,7 @@ import com.qqd.model.Car;
  */
 public interface CarService {
 
+	public Car findCarBySn(String sn);
 	/**
 	 * 根据登录帐号查找
 	 * 
@@ -54,6 +55,8 @@ public interface CarService {
 	 */
 	public List<Car> findCarsByUserName(String userName);
 
-	public Boolean changeCarStatus(String userName, String alertstatus,String sn);
+	public Boolean changeCarStatus(String userName, String status, String sn, String fieldName);
+
+	public Boolean deleteCar(String userName, String sn);
 
 }

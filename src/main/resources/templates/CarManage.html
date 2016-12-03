@@ -19,9 +19,108 @@
 			<a class="backBtn" th:href="@{/backstage/addcar}"><img
 				width="37px" height="37px" th:src="@{/IMAGES/add.png}" /></a>
 		</div>
-		<div id="div-right"></div>
+		<div id="div-right">
+
+
+			<thymeleaf th:each="car : ${cars}" th:if="${not #lists.isEmpty(cars)}" >
+			<div class="div-item">
+				<div class="div-1">
+					<div class="ItemTitle" th:text="${car.name}"></div>
+					<div th:text="${car.sn}"></div>
+				</div>
+				<div class="div-2">
+					<div style="">
+						<div th:text="'状态:'+${car.status} +' '+${car.power}"></div>
+						<div>位置：浙江省杭州市江干区就包三餐西园1506号</div>
+					</div>
+				</div>
+				<div class="div-3">
+					<div th:text="'速度：'+${car.speed} +'km/h'"></div>
+					<div th:text="'当日里程：'+${car.todaymileage}+'km'"></div>
+					<div th:text="'总里程：'+${car.totalmileage}+'km'"></div>
+
+				</div>
+				<div class="div-4">
+					<span></span> 
+					 <a href="#" th:onclick="'editCar('+${car.sn}+')'"><img th:src="@{/images/edit.png}" /></a>
+					 <a href="#" th:onclick="'power('+${car.powerflag}+')'"><img th:src="@{/images/battery-red.png}" /></a> 
+					 <a href="#" th:onclick="'restart('+${car.sn}+')'" ><img th:src="@{/images/restart.png}" /></a>
+					 <a href="#" th:onclick="'deleteCar('+${car.sn}+')'" ><img th:src="@{/images/delete.png}" /></a>
+				</div>
+			</div>
+
+			</thymeleaf>
+		</div>
 
 	</form>
-	<script th:src="@{/js/system/carmanage.js}"></script>
+	
 </body>
+
+<script>
+
+		function editCar(sn){
+			window.location.href = "/backstage/editCar?sn="+sn;
+		}
+		function power(sn,powerflag){
+			$.ajax({
+				type : 'POST',
+				url : '/backstage/changeStatus',
+				data : {
+					'status' :'Y',
+					'sn' : sn,
+					'fieldName' : 'restartflag'
+				},
+				dataType : 'json',
+				success : function(data, textStatus) {
+					var result = data.result;
+					if ("success" != result) { // 如果登录不成功，则再次刷新验证码
+						alert(result);
+					} else {
+						window.location.href = "/backstage/carManage";
+					}
+				}
+			});
+		}
+
+		function restart(sn) {
+			
+			$.ajax({
+				type : 'POST',
+				url : '/backstage/changeStatus',
+				data : {
+					'status' :'Y',
+					'sn' : sn,
+					'fieldName' : 'restartflag'
+				},
+				dataType : 'json',
+				success : function(data, textStatus) {
+					var result = data.result;
+					if ("success" != result) { // 如果登录不成功，则再次刷新验证码
+						alert(result);
+					} else {
+						window.location.href = "/backstage/carManage";
+					}
+				}
+			});
+		}
+		function  deleteCar(sn) {
+			
+			$.ajax({
+				type : 'POST',
+				url : '/backstage/deleteCar',
+				data : {
+					'sn' : sn
+				},
+				dataType : 'json',
+				success : function(data, textStatus) {
+					var result = data.result;
+					if ("success" != result) { // 如果登录不成功，则再次刷新验证码
+						alert(result);
+					} else {
+						window.location.href = "/backstage/carManage";
+					}
+				}
+			});
+		}
+	</script>
 </html>

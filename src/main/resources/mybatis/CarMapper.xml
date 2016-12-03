@@ -13,15 +13,18 @@
 		SELECT t.*
 		FROM g_car
 		t
-		WHERE t.sn = #{sn}
+		WHERE
+		t.sn = #{sn}
 	</select>
 
-
-
 	<update id="changeCarStatus">
-	update g_car g
-	set g.alertstatus =#{alertstatus}
-	where g.username =#{username} and g.sn =#{sn}
+		update g_car
+		set ${fieldName} =#{status}
+		where
+		username = #{username} and sn =#{sn}
 	</update>
 
+	<delete id="deleteCar">
+		delete from g_car where username = #{username} and sn = #{sn}
+	</delete>
 </mapper>

@@ -36,7 +36,6 @@ import org.apache.ibatis.annotations.Param;
 
 import com.qqd.model.Car;
 
-
 /**
  * @ClassName UserDao
  * @Description TODO(这里用一句话描述这个类的作用)
@@ -45,13 +44,14 @@ import com.qqd.model.Car;
  * @version 1.0.0
  */
 @Mapper
-public interface CarDao  {
-	public List<Car> findCarsByUserName(@Param("username")String username);
-	
-	public Integer changeCarStatus(@Param("username")String username,@Param("alertstatus")String alertstatus,@Param("sn")String sn);
+public interface CarDao {
+	public List<Car> findCarsByUserName(@Param("username") String username);
 
+	public Car findCarBySn(@Param("sn") String sn);
 
-	public Car findCarBySn(@Param("sn")String sn);
+	public Integer changeCarStatus(@Param("username") String username, @Param("status") String status,
+			@Param("sn") String sn, @Param("fieldName") String fieldName);
 
+	public Integer deleteCar(@Param("username") String username, @Param("sn") String sn);
 
 }

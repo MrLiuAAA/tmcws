@@ -254,17 +254,17 @@ public class BackstageController extends BaseController<User> {
 	 * @param model
 	 * @return
 	 */
-	
-	@RequestMapping(value="editGuard",method = RequestMethod.GET)
-	public String editGuard(Model model,String alertphone) {
 
-
-		System.out.println("alertphone====="+alertphone);
-		model.addAttribute("alertphone",alertphone);
-
+	@RequestMapping(value = "editGuard", method = RequestMethod.GET)
+	public String editGuard(Model model, String alertphone, String shockalert, String cuttinglinealert,
+			String autoalert, String sn) {
+		model.addAttribute("sn", sn);
+		model.addAttribute("alertphone", alertphone);
+		model.addAttribute("shockalert", shockalert);
+		model.addAttribute("cuttinglinealert", cuttinglinealert);
+		model.addAttribute("autoalert", autoalert);
 		return "editGuard";
 	}
-
 
 	/**
 	 * 修改 设防状态
@@ -274,12 +274,12 @@ public class BackstageController extends BaseController<User> {
 	 */
 	@RequestMapping(value = "changeStatus", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> changeStatus(String alertstatus, String sn) {
+	public Map<String, Object> changeStatus(String status, String sn, String fieldName) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		User currentUser = AccountShiroUtil.getCurrentUser();
 		/// 查询出当前车辆的位置
-		Boolean ret = carService.changeCarStatus(currentUser.getUsername(), alertstatus, sn);
-		map.put("result", ret?"success":"failure");
+		Boolean ret = carService.changeCarStatus(currentUser.getUsername(), status, sn, fieldName);
+		map.put("result", ret ? "success" : "failure");
 		System.out.println(map);
 		return map;
 	}
@@ -324,6 +324,33 @@ public class BackstageController extends BaseController<User> {
 	 */
 	@RequestMapping("carManage")
 	public String carManage(Model model) {
+
+		User currentUser = AccountShiroUtil.getCurrentUser();
+		/// 查询出当前车辆的位置
+		List<Car> cars = carService.findCarsByUserName(currentUser.getUsername());
+
+		List<Map<String, String>> rList = new ArrayList<>();
+		if (cars != null) {
+			for (Car car : cars) {
+				HashMap<String, String> map = new HashMap<>();
+				map.put("name", car.getName()); /// 名字
+				map.put("sn", car.getSn()); /// 标识
+				map.put("power", "Y".equalsIgnoreCase(car.getPower()) ? "通电中" : "已断电"); /// 断电
+				map.put("powerflag", "Y".equalsIgnoreCase(car.getPower()) ? "Y" : "N"); /// 断电
+				map.put("speed", car.getSpeed() == null ? "0" : car.getSpeed());/// 速度
+				map.put("todaymileage", car.getMileage() == null ? "0" : car.getMileage());/// 当日里程
+				map.put("totalmileage", car.getTotlemileage() == null ? "0" : car.getTotlemileage());/// 总里程
+
+				map.put("latitude", car.getLatitude());/// 维度
+				map.put("longitude", car.getLongitude());/// 经度
+				map.put("status",
+						"已失效".equals(car.getStatus()) ? "已失效" : ("Y".equals(car.getAlertstatus()) ? "设防状态" : "未设防状态"));
+				rList.add(map);
+			}
+		}
+
+		model.addAttribute("cars", rList);
+
 		return "carManage";
 	}
 
@@ -336,6 +363,41 @@ public class BackstageController extends BaseController<User> {
 	@RequestMapping("addcar")
 	public String addcar(Model model) {
 		return "addcar";
+	}
+	
+	@RequestMapping(value = "editCar", method = RequestMethod.GET)
+	public String editCar(Model model,String sn) {
+		
+		Car car = carService.findCarBySn(sn);
+		
+		model.addAttribute("car", car);
+		return "editCar";
+	}
+	
+	
+	@RequestMapping(value = "saveCar", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> saveCar(String sn,String name) {
+		
+		
+		return null;
+	}
+	
+	
+
+	/**
+	 * deleteCar
+	 */
+	@RequestMapping(value = "deleteCar", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> deleteCar(String sn) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		User currentUser = AccountShiroUtil.getCurrentUser();
+		/// 查询出当前车辆的位置
+		Boolean ret = carService.deleteCar(currentUser.getUsername(), sn);
+		map.put("result", ret ? "success" : "failure");
+		System.out.println(map);
+		return map;
 	}
 
 	/**
@@ -359,6 +421,7 @@ public class BackstageController extends BaseController<User> {
 				map.put("sn", car.getSn()); /// 标识
 				map.put("latitude", car.getLatitude());/// 维度
 				map.put("longitude", car.getLongitude());/// 经度
+
 				map.put("status",
 						"已失效".equals(car.getStatus()) ? "已失效" : ("Y".equals(car.getAlertstatus()) ? "设防状态" : "未设防状态"));
 				rList.add(map);
