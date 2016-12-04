@@ -54,4 +54,5 @@ public interface CarDao {
 
 	public Integer deleteCar(@Param("username") String username, @Param("sn") String sn);
 
+	public void saveCar(Car car);
 }

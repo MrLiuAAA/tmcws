@@ -59,4 +59,5 @@ public interface CarService {
 
 	public Boolean deleteCar(String userName, String sn);
 
+	public Boolean addCar(String username, String sn, String name);
 }

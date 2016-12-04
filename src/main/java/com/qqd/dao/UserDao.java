@@ -45,4 +45,6 @@ import com.qqd.model.User;
 @Mapper
 public interface UserDao  {
 	public User findUserByUserName(@Param("username") String name);
+
+    Integer updateUserInfo(User user);
 }

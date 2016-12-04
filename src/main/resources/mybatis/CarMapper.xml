@@ -27,4 +27,11 @@
 	<delete id="deleteCar">
 		delete from g_car where username = #{username} and sn = #{sn}
 	</delete>
+
+
+	<insert id="saveCar" parameterType="com.qqd.model.Car"  useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+
+		INSERT INTO g_car (sn,username,`name`,status) VALUES (#{sn},#{username},#{name},"未设防")
+
+	</insert>
 </mapper>

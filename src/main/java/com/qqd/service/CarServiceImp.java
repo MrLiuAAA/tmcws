@@ -86,7 +86,7 @@ public class CarServiceImp implements CarService {
 	public Boolean changeCarStatus(String userName, String status, String sn, String fieldName) {
 
 		Car car = carDao.findCarBySn(sn);
-
+		String code = car.getCode();
 		Integer r = carDao.changeCarStatus(userName, status, sn, fieldName);
 
 		/**
@@ -102,7 +102,6 @@ public class CarServiceImp implements CarService {
 			Date date = new Date();
 			DateFormat format = new SimpleDateFormat("HHmmss");
 			String time = format.format(date);
-			String code = car.getCode();
 			String cmd = "SCF";
 			String message = "*" + code + "," + sn + "," + cmd + "," + time + ","
 					+ ("Y".equalsIgnoreCase(status) ? "0" : "1") + ",0#";
@@ -119,7 +118,93 @@ public class CarServiceImp implements CarService {
 			 */
 			messageQueueDao.deletetMessageQueueBySnAndCodeAndCmd(sn, code, cmd);
 			messageQueueDao.insertMessageQueue(messageQueue);
+		}else if ("restartflag".equalsIgnoreCase(fieldName)) {
+			/**
+			 * 将 重启消息 放入消息列队  g_message_queue 表
+			 */
+
+			String cmd = "Reboot";
+			String message = "Reboot";
+
+
+			messageQueue.setSn(sn);
+			messageQueue.setCode(code);
+			messageQueue.setCmd(cmd);
+			messageQueue.setMessage(message);
+
+			messageQueueDao.deletetMessageQueueBySnAndCodeAndCmd(sn, code, cmd);
+			messageQueueDao.insertMessageQueue(messageQueue);
+
+		}else if ("power".equalsIgnoreCase(fieldName)) {
+
+			/** 断油电(继电器)
+			 * 断开：*HQ,8690056946,S20,095540,1,1#
+			 * 恢复：*HQ,8690056946,S20,095540,1,0#
+			 */
+			Date date=new Date();
+			DateFormat format=new SimpleDateFormat("HHmmss");
+			String time = format.format(date);
+			String cmd = "S20";
+			String message = "*"+code+"," + sn + ","+cmd+"," + time+",1,"+
+					("Y".equalsIgnoreCase(status)?"0":"1")+"#";
+
+
+			messageQueue.setSn(sn);
+			messageQueue.setCode(code);
+			messageQueue.setCmd(cmd);
+			messageQueue.setMessage(message);
+
+			messageQueueDao.deletetMessageQueueBySnAndCodeAndCmd(sn, code, cmd);
+			messageQueueDao.insertMessageQueue(messageQueue);
+
+		}else if ("shockalert".equalsIgnoreCase(fieldName)) {
+			/// 震动报警
+			/**
+			 *  来电报警开启：VAphoneon
+			 *	来电报警关闭：VAphoneoff
+			 *	短信报警开启：125#
+			 *	短信报警关闭：126#
+			 */
+
+			String cmd = "shockalert";
+			String message = ("Y".equalsIgnoreCase(status)?"VAphoneon":"VAphoneoff");
+
+
+			messageQueue.setSn(sn);
+			messageQueue.setCode(code);
+			messageQueue.setCmd(cmd);
+			messageQueue.setMessage(message);
+
+			messageQueueDao.deletetMessageQueueBySnAndCodeAndCmd(sn, code, cmd);
+			messageQueueDao.insertMessageQueue(messageQueue);
+
+
+		}else if ("cuttinglinealert".equalsIgnoreCase(fieldName)) {
+			/// 断电报警
+			/**
+			 *来电报警开启：PCAphoneon
+			 *来电报警关闭：PCAoff
+			 *短信报警开启：pwrsms123456,1
+			 *短信报警关闭：pwrsms123456,0
+			 */
+
+
+			String cmd = "cuttinglinealert";
+			String message = ("Y".equalsIgnoreCase(status)?"PCAphoneon":"PCAoff");
+
+
+			messageQueue.setSn(sn);
+			messageQueue.setCode(code);
+			messageQueue.setCmd(cmd);
+			messageQueue.setMessage(message);
+
+			messageQueueDao.deletetMessageQueueBySnAndCodeAndCmd(sn, code, cmd);
+			messageQueueDao.insertMessageQueue(messageQueue);
+
+
 		}
+
+
 
 		return r > 0;
 	}
@@ -128,6 +213,20 @@ public class CarServiceImp implements CarService {
 	public Boolean deleteCar(String userName, String sn) {
 		int r = carDao.deleteCar(userName, sn);
 		return r > 0;
+	}
+
+
+
+	@Override
+	public Boolean addCar(String username, String sn, String name) {
+
+		Car car = new Car();
+		car.setSn(sn);
+		car.setName(name);
+		car.setUsername(username);
+
+		carDao.saveCar(car);
+		return car.getId()!=null;
 	}
 
 }

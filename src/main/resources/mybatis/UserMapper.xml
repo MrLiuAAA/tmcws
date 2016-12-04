@@ -7,7 +7,7 @@
 	<resultMap type="com.qqd.model.User" id="userMap" autoMapping="true">
 	
 		<result column="username" property="username"/>
-		<association property="cars" column="username" select="findCarsByUserName"></association>
+		<association property="cars" column="username" select="com.qqd.dao.CarDao.findCarsByUserName"></association>
 	</resultMap>
 	
 	<select id="findUserByUserName" resultMap="userMap">
@@ -17,11 +17,16 @@
 	</select>
 	
 	
-	
-	<select id="findCarsByUserName" resultType="com.qqd.model.Car">
-		SELECT t.*
-		FROM  g_car t
-		WHERE t.username = #{username}
-	</select>
-	
+	<update id="updateUserInfo" parameterType="com.qqd.model.User">
+
+		UPDATE `user`
+
+		SET nickname=#{nickname} AND telephone = #{telephone}
+
+		WHERE userid = #{userid}
+
+	</update>
+
+
+
 </mapper>

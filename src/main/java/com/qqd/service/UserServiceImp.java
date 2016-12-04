@@ -66,5 +66,9 @@ public class UserServiceImp implements UserService {
 		return a;
 	}
 
-	
+	@Override
+	public boolean updateUserInfo(User user) {
+		Integer a = userDao.updateUserInfo(user);
+		return a>0;
+	}
 }

@@ -50,5 +50,6 @@ public interface UserService{
      * @return
      */
     public User findUserByName(String loginName);
- 
+
+    boolean updateUserInfo(User user);
 }

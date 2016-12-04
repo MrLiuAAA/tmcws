@@ -22,18 +22,6 @@
  *****************************************************************/
 package com.qqd.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.alibaba.fastjson.JSON;
 import com.qqd.AjaxRes;
 import com.qqd.model.Car;
@@ -42,9 +30,21 @@ import com.qqd.model.TrajectoryInfo;
 import com.qqd.model.User;
 import com.qqd.service.CarService;
 import com.qqd.service.GpsDataService;
+import com.qqd.service.SerialsNumberService;
 import com.qqd.service.UserService;
 import com.qqd.utils.PageData;
 import com.qqd.utils.security.AccountShiroUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName BackstageController
@@ -65,6 +65,9 @@ public class BackstageController extends BaseController<User> {
 
 	@Autowired
 	public GpsDataService gpsDataServcie;
+
+	@Autowired
+	public SerialsNumberService serialsNumberService;
 
 	/**
 	 * 访问系统首页
@@ -378,9 +381,30 @@ public class BackstageController extends BaseController<User> {
 	@RequestMapping(value = "saveCar", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> saveCar(String sn,String name) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		User currentUser = AccountShiroUtil.getCurrentUser();
+
+		if (serialsNumberService.validateSN(sn)) {
+
+			/// 验证成功后  解码
+			///  将前两位替换为 20  然后再去掉后三位
+			sn = "20"+sn.substring(2, 10);
+
+			Boolean result = carService.addCar(currentUser.getUsername(), sn, name);
+
+			System.out.println("result = " + result);
+
+			map.put("result", result ? "success" : "failure");
+			if (result){
+				map.put("msg", "添加失败");
+			}
+		} else {
+			map.put("result", "failure");
+			map.put("msg", "序列号错误");
+		}
+
 		
-		
-		return null;
+		return map;
 	}
 	
 	
@@ -431,4 +455,55 @@ public class BackstageController extends BaseController<User> {
 		ar.setSucceed(rList);
 		return ar;
 	}
+
+
+
+	@RequestMapping("personalInfo")
+	public String personalInfo(Model model) {
+		User currentUser = AccountShiroUtil.getCurrentUser();
+		model.addAttribute("user",currentUser);
+		return "personalInfo";
+	}
+
+
+	@RequestMapping("messageInfo")
+	public String messageInfo(Model model) {
+		return "messageInfo";
+	}
+
+
+	@RequestMapping("aboutUs")
+	public String aboutUs(Model model) {
+		return "aboutUs";
+	}
+
+	@RequestMapping("editPersonalInfo")
+	public String editPersonalInfo(Model model) {
+
+		User currentUser = AccountShiroUtil.getCurrentUser();
+		model.addAttribute("user",currentUser);
+		return "editPersonalInfo";
+	}
+
+
+
+	@RequestMapping(value = "saveUserInfo", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> saveUserInfo(User user) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		User currentUser = AccountShiroUtil.getCurrentUser();
+
+		user.setUserid(currentUser.getUserid());
+		//
+		if(userService.updateUserInfo(user)){
+			map.put("result", "success" );
+		}else{
+			map.put("result", "failure");
+			map.put("msg", "保存失败");
+		}
+
+
+		return map;
+	}
+
 }
