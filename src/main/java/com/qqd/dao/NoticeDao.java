@@ -29,22 +29,15 @@
  *****************************************************************/
 package com.qqd.dao;
 
+import com.qqd.model.Car;
+import com.qqd.model.Notice;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.qqd.model.User;
+import java.util.List;
 
 
-/**
- * @ClassName UserDao
- * @Description TODO(这里用一句话描述这个类的作用)
- * @author liujianyang
- * @Date 2016年11月1日 上午8:50:20
- * @version 1.0.0
- */
 @Mapper
-public interface UserDao  {
-	public User findUserByUserName(@Param("username") String name);
-
-    public Integer updateUserInfo(User user);
+public interface NoticeDao {
+	public List<Notice> findNoticesByUserName(@Param("username") String username);
 }

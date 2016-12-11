@@ -21,7 +21,7 @@
 
 		UPDATE `user`
 
-		SET nickname=#{nickname} AND telephone = #{telephone}
+		SET nickname=#{nickname} , telephone = #{telephone}
 
 		WHERE userid = #{userid}
 

@@ -22,7 +22,7 @@
 		<div id="div-right">
 
 
-			<thymeleaf th:each="car : ${cars}" th:if="${not #lists.isEmpty(cars)}" >
+			<thymeleaf th:each="car : ${cars}" th:if="${not #lists.isEmpty(cars)}" th:remove="tag">
 			<div class="div-item">
 				<div class="div-1">
 					<div class="ItemTitle" th:text="${car.name}"></div>

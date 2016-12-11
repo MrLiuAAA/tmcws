@@ -24,14 +24,8 @@ package com.qqd.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.qqd.AjaxRes;
-import com.qqd.model.Car;
-import com.qqd.model.GpsData;
-import com.qqd.model.TrajectoryInfo;
-import com.qqd.model.User;
-import com.qqd.service.CarService;
-import com.qqd.service.GpsDataService;
-import com.qqd.service.SerialsNumberService;
-import com.qqd.service.UserService;
+import com.qqd.model.*;
+import com.qqd.service.*;
 import com.qqd.utils.PageData;
 import com.qqd.utils.security.AccountShiroUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +62,10 @@ public class BackstageController extends BaseController<User> {
 
 	@Autowired
 	public SerialsNumberService serialsNumberService;
+
+
+	@Autowired
+	public NoticeService noticeService;
 
 	/**
 	 * 访问系统首页
@@ -468,6 +466,13 @@ public class BackstageController extends BaseController<User> {
 
 	@RequestMapping("messageInfo")
 	public String messageInfo(Model model) {
+		///  获取当前用户的  消息列表
+		User currentUser = AccountShiroUtil.getCurrentUser();
+
+		List<Notice> notices = noticeService.findNoticesByUserName(currentUser.getUsername());
+
+		model.addAttribute("notices", notices);
+
 		return "messageInfo";
 	}
 
@@ -497,6 +502,10 @@ public class BackstageController extends BaseController<User> {
 		//
 		if(userService.updateUserInfo(user)){
 			map.put("result", "success" );
+			User realCurrentUser = AccountShiroUtil.getRealCurrentUser();
+			realCurrentUser.setNickname(user.getNickname());
+			realCurrentUser.setTelephone(user.getTelephone());
+
 		}else{
 			map.put("result", "failure");
 			map.put("msg", "保存失败");
