@@ -34,6 +34,8 @@ import org.apache.ibatis.annotations.Param;
 
 import com.qqd.model.User;
 
+import java.util.List;
+
 
 /**
  * @ClassName UserDao
@@ -47,4 +49,10 @@ public interface UserDao  {
 	public User findUserByUserName(@Param("username") String name);
 
     public Integer updateUserInfo(User user);
+
+    public Integer updateUserAvatar(User user);
+
+    public List<User> findAllUsers();
+
+    public Integer delete(@Param("userid") String userid);
 }

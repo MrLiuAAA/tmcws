@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>天目-账户管理-添加用户</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../css/public.css" />
+    <link rel="stylesheet" href="../css/index.css" />
+    <script type="text/javascript" src="../../static/js/jquery-2.1.1.min.js" ></script>
+    <script type="text/javascript" src="../../static/js/iscroll.js" ></script>
+    <script type="text/javascript" src="../../static/js/bootstrap.min.js" ></script>
+    <script type="text/javascript" src="../../static/js/common.js" ></script>
+    <script type="text/javascript" src="../../static/js/admin/userManage.js"></script>
+</head>
+<body>
+<div class="wrapper">
+    <div class="main-sidebar backColor">
+        <div class="userBox">
+            <div class="user">
+                <img src="../../static/images/huge.jpg" alt="用户"/>
+            </div>
+            <p class="userName">我就是我</p>
+        </div>
+        <div class="infoList clearfix">
+            <div class="info">
+                <p>绑定</p>
+                <p class="number">5</p>
+            </div>
+            <div class="info">
+                <p>设防</p>
+                <p class="number">5</p>
+            </div>
+            <div class="info">
+                <p>失防</p>
+                <p class="number">5</p>
+            </div>
+        </div>
+        <div class="itemList">
+            <ul>
+                <li class="item"><a href="carPosition.html"><span class="points"></span>车辆方位</a></li>
+                <li class="item"><a href="locus.html"><span class="history"></span>历史轨迹</a></li>
+                <li class="item"><a href="fortifyManage.html"><span class="fortify"></span>设防</a></li>
+                <li class="item"><a href="carManage.html"><span class="manage"></span>车辆管理</a></li>
+                <li class="item active"><a href="userManage.html"><span class="datum"></span>账户管理</a></li>
+                <li class="item"><a href="movementManage.html"><span class="news"></span>推送管理</a></li>
+            </ul>
+            <div class="withdraw">退出账号</div>
+        </div>
+    </div>
+    <div class="content-wrapper">
+        <div class="manage clearfix">
+            <div class="manageBox manageL">
+                <a href="addManage.html.html"><div class="backOpen"></div></a>
+                <div class="saveOpen"></div>
+            </div>
+            <div class="manageBox manageR">
+                <table class="table table-hover">
+                    <tbody>
+                    <tr>
+                        <td width="60%">
+                            <h3 class="carName">用户名</h3>
+                        </td>
+                        <td width="40%">
+                            <div class="manage">
+                                <input type="text" class="editor" placeholder="请输入用户名">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h3 class="carName">密码</h3>
+                        </td>
+                        <td>
+                            <div class="manage">
+                                <input type="password" class="editor" placeholder="请输入密码">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h3 class="carName">再次输入密码</h3>
+                        </td>
+                        <td>
+                            <div class="manage">
+                                <input type="password" class="editor" placeholder="请再次输入密码">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h3 class="carName">关联车辆</h3>
+                        </td>
+                        <td>
+                            <div class="manage">
+                                <input type="text" class="editor" placeholder="请输入关联车辆"><span class="carInfo"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

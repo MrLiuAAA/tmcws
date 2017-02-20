@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <title>天目-车辆设防管理</title>
+    <thymeleaf th:include="common :: css" th:remove="tag"/>
+    <thymeleaf th:include="common :: js" th:remove="tag"/>
+</head>
+<body>
+<div class="wrapper">
+
+    <thymeleaf th:include="main_sidebar :: main" th:remove="tag"/>
+
+    <div class="content-wrapper">
+        <div class="manage clearfix">
+            <div class="manageBox userManage">
+                <table class="table table-hover">
+                    <tbody>
+                    <tr>
+                        <td width="20%">
+                            <h3 class="carName"><a href="/backstage/superadminmanage">超级管理员账户</a></h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="20%">
+                            <h3 class="carName"><a href="/backstage/adminmanage">二级管理员账户</a></h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="20%">
+                            <h3 class="carName"><a href="/backstage/member">个人账户</a></h3>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $("#account_li").addClass("active");
+</script>
+</body>
+</html>

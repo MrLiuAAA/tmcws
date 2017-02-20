@@ -29,6 +29,7 @@
  *****************************************************************/
 package com.qqd.service;
 
+import com.github.pagehelper.PageInfo;
 import com.qqd.model.User;
 
 /**
@@ -52,4 +53,10 @@ public interface UserService{
     public User findUserByName(String loginName);
 
     boolean updateUserInfo(User user);
+
+    public boolean updateUserAvatar(User user);
+
+    public PageInfo<User> findAllUsers(String page);
+
+    public Boolean deleteUser(String userid);
 }

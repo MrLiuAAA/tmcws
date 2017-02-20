@@ -1,13 +1,15 @@
 package com.qqd.shiro;
 
 
+import com.alibaba.fastjson.JSON;
+import com.qqd.Const;
+import com.qqd.model.AdminUser;
+import com.qqd.model.User;
+import com.qqd.service.AdminUserService;
+import com.qqd.service.UserService;
+import com.qqd.utils.MD5Util;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -15,12 +17,6 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.alibaba.fastjson.JSON;
-import com.qqd.Const;
-import com.qqd.model.User;
-import com.qqd.service.UserService;
-import com.qqd.utils.MD5Util;
 
 
 
@@ -34,6 +30,9 @@ public class ShiroRealm extends AuthorizingRealm {
      */
     @Autowired
     private UserService userService;
+
+	@Autowired
+	private AdminUserService adminUserService;
 	
 	/*
 	 * 登录信息和用户验证信息验证(non-Javadoc)
@@ -41,24 +40,45 @@ public class ShiroRealm extends AuthorizingRealm {
 	 */
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken)  {
-		 UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
+		TMCWSToken token = (TMCWSToken) authcToken;
 		 AuthenticationInfo authenticationInfo = null;
 		 String username=new String(token.getUsername());//用户名
 		 String password=new String(token.getPassword());//密码
+		String from=new String(token.getFrom());//来源
 		System.out.println("登录用户:"+username + "  " +password);
-		 User a = userService.findUserByName(username);//通过登录名 寻找用户
-		System.out.println("登录用户:"+ JSON.toJSONString(a,true));
-		if (a != null) {
-	    	 if(a.getPassword().equals(MD5Util.md5Encode(password))){
-	    		 authenticationInfo = new SimpleAuthenticationInfo(a.getUsername(), password, getName());
-	    		 this.setSession(Const.SESSION_USER, a);
-	    		 return authenticationInfo;
-	    	 }else{
-	    		 throw new IncorrectCredentialsException(); /*错误认证异常*/
-	    	 }    	
-	     } else {
-	    	 throw new UnknownAccountException(); /*找不到帐号异常*/
-	     }
+
+		if ("user".equalsIgnoreCase(from)){
+			User a = userService.findUserByName(username);//通过登录名 寻找用户
+			System.out.println("用户端：:"+ JSON.toJSONString(a,true));
+			if (a != null) {
+				if(a.getPassword().equals(MD5Util.md5Encode(password))){
+					authenticationInfo = new SimpleAuthenticationInfo(a.getUsername(), password, getName());
+					ShiroRealm.setSession(Const.SESSION_USER, a);
+					return authenticationInfo;
+				}else{
+					throw new IncorrectCredentialsException(); /*错误认证异常*/
+				}
+			} else {
+				throw new UnknownAccountException(); /*找不到帐号异常*/
+			}
+		}else{
+
+			AdminUser adminUser = adminUserService.findAdminUserByName(username);
+
+			if (adminUser!=null){
+				if(adminUser.getPassword().equals(MD5Util.md5Encode(password))){
+					authenticationInfo = new SimpleAuthenticationInfo(adminUser.getLoginname(), password, getName());
+					ShiroRealm.setSession(Const.SESSION_ADMIN_USER, adminUser);
+					return authenticationInfo;
+				}else{
+					throw new IncorrectCredentialsException(); /*错误认证异常*/
+				}
+			}else{
+				throw new UnknownAccountException(); /*找不到帐号异常*/
+			}
+		}
+
+
 	     
 	}
 	
@@ -84,7 +104,7 @@ public class ShiroRealm extends AuthorizingRealm {
      *
      * @see
      */
-    private void setSession(Object key, Object value) {
+    public static void setSession(Object key, Object value) {
     	System.out.println("将一些数据放到ShiroSession中,以便于其它地方使用 ");
         Subject currentUser = SecurityUtils.getSubject();
         if (null != currentUser) {

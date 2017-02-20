@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qqd.dao.AdminUserDao">
+
+	
+	
+	<resultMap type="com.qqd.model.AdminUser" id="userMap" autoMapping="true">
+		<!--<result column="username" property="username"/>-->
+		<!--<association property="cars" column="username" select="com.qqd.dao.CarDao.findCarsByUserName"></association>-->
+	</resultMap>
+	
+	<select id="findAdminUserByUserName" resultMap="userMap">
+		SELECT t.* 
+		FROM `adminuser` t
+		WHERE t.loginname = #{loginname}
+	</select>
+
+	<select id="findSuperAdmin" resultMap="userMap">
+		SELECT t.*
+		FROM `adminuser` t
+		WHERE t.role = '0'
+	</select>
+
+	<select id="findAdmin" resultMap="userMap">
+		SELECT t.*
+		FROM `adminuser` t
+		WHERE t.role = '1'
+	</select>
+
+	<insert id="save" keyColumn="id" keyProperty="id" parameterType="AdminUser"
+			useGeneratedKeys="true">
+
+		INSERT INTO adminuser (loginname,`name`,password,role)
+		VALUES (#{loginname},#{name},#{password},#{role})
+
+	</insert>
+
+</mapper>

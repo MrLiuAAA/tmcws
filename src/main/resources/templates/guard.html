@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <title>天目-车辆设防管理</title>
+    <thymeleaf th:include="common :: css" th:remove="tag"/>
+    <thymeleaf th:include="common :: js" th:remove="tag"/>
+</head>
+
+<body>
+<div class="wrapper">
+
+    <thymeleaf th:include="main_sidebar :: main" th:remove="tag"/>
+
+    <div class="content-wrapper">
+        <div class="manage clearfix">
+            <div class="manageBox manageL" style="display: none">
+                <a href="fortifyManage.html"><div class="backOpen"></div></a>
+                <!--<div class="searchOpen" id="searchOpen"></div>-->
+            </div>
+            <div class="manageBox manageR">
+                <div class="searchBox">
+                    <div class="search">
+                        <input type="text" placeholder="请输入检车辆编号" id="keyword"/>
+                        <span class="searchImg" onclick="searchCar();"></span>
+                    </div>
+                </div>
+                <ul class="fortifyList" id="fortifyList">
+                    <!--<li class="clearfix">-->
+                        <!--<div class="fortifyL">-->
+                            <!--<h3 class="fortifyName"><a href="movementEdite.html">法拉利1号</a></h3>-->
+                            <!--<p>车辆已经失效</p>-->
+                        <!--</div>-->
+                        <!--<div class="fortifyR">-->
+                            <!--<div class="checkbox checkbox-slider&#45;&#45;b-flat checkbox-slider-md">-->
+                                <!--<label><input type="checkbox" checked="checked" /><span></span></label>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</li>-->
+                    <!--<li class="clearfix">-->
+                        <!--<div class="fortifyL">-->
+                            <!--<h3 class="fortifyName"><a href="fortifyEdite.html">法拉利3号</a></h3>-->
+                            <!--<p>车辆已经失效</p>-->
+                        <!--</div>-->
+                        <!--<div class="fortifyR">-->
+                            <!--<div class="checkbox checkbox-slider&#45;&#45;b-flat checkbox-slider-md">-->
+                                <!--<label><input type="checkbox" checked="checked"/><span></span></label>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</li>-->
+                    <!--<li class="clearfix">-->
+                        <!--<div class="fortifyL">-->
+                            <!--<h3 class="fortifyName"><a href="fortifyEdite.html">法拉利5号</a></h3>-->
+                            <!--<p>车辆已经失效</p>-->
+                        <!--</div>-->
+                        <!--<div class="fortifyR">-->
+                            <!--<div class="checkbox checkbox-slider&#45;&#45;b-flat checkbox-slider-md">-->
+                                <!--<label><input type="checkbox"/><span></span></label>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</li>-->
+                </ul>
+                <div class="page">
+                    <div class="pageList">
+                        <nav>
+                            <ul class="pagination" id="pagination">
+                                <li><a href="#">共-页</a></li>
+                                <li><a href="#">上一页</a></li>
+                                <li><a href="#">0</a></li>
+                                <li><a href="#">下一页</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $("#guard_li").addClass("active");
+
+</script>
+<script th:src="@{/js/system/guard.js}"></script>
+</body>
+</html>

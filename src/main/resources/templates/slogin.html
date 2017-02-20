@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+		<meta charset="UTF-8"/>
+		<title>管理员-登录</title>
+    <link rel="stylesheet" th:href="@{/css/public.css}" />
+    <link rel="stylesheet" th:href="@{/css/login.css}" />
+
+    <link rel="stylesheet" th:href="@{/js/jquery-ui.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+
+    <style type="text/css">
+        .title-no-close .ui-dialog-titlebar-close{display: none;}
+        .loading-no-close .ui-dialog-titlebar{display: none;}
+        .loading-no-close{background:#fff;filter: alpha(opacity = 50);background-color: rgba(0,0,0,0.5) !important;color:#ff892a;border:0px !important;}
+        .loading-no-close .ui-dialog-content{padding: 0 !important;margin-top: 2px;margin-bottom: 2px;}
+    </style>
+
+
+    <script th:src="@{/js/jquery-2.1.1.min.js}"></script>
+	<script th:src="@{/js/jquery.tips.js}"></script>
+	<script th:src="@{/js/jquery-ui.min.js}"></script>
+	<script th:src="@{/js/jy.main.js}"></script>
+    <script th:src="@{/js/system/slogin.js}"></script>
+
+	<script type="text/javascript" th:src="@{/js/layer/layer.js}"></script>
+
+
+
+
+</head>
+	<body>
+		<div class="login">
+			<div class="message">后台管理员－ <span> 登录 </span></div>
+			<div class="wrap"></div>
+			<!--<form method="post" action="">-->
+				<input id="username" name="username" placeholder="请输入用户名" required="required" type="text"/>
+				<hr class="hr15"/>
+				<input id="password" name="password" placeholder="请输入密码" required="required" type="password"/>
+				<hr class="hr15"/>
+				<input id="yzm"  class="yzm" name="yzm" placeholder="请输入验证码" required="required" type="text"/>
+				<img id="yzmpic" class="yzmpic" th:src="@{/images/yanzma.png}" style="vertical-align: middle;cursor:pointer;" alt="点击修改验证码"/>
+				<hr class="hr15"/>
+				<input id="loginBtn" value="登录" style="width:100%;" type="submit"/>
+				<hr class="hr20"/>
+			<!--</form>-->
+		</div>
+		<div class="copyright">
+			<div class="foot">
+				http://user.tiamu.cn&nbsp;©&nbsp;<a href="http://user.tiamu.cn">天目</a> by
+			<a href="" target="_blank">2016</a>
+			</div>
+		</div>
+
+        <thymeleaf th:include="dialog :: dialog" th:remove="tag"/>
+
+
+    </body>
+
+</html>

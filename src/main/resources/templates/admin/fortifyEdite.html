@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>天目-编辑设防</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../css/titatoggle-dist-min.css" />
+    <link rel="stylesheet" href="../css/public.css" />
+    <link rel="stylesheet" href="../css/index.css" />
+    <script type="text/javascript" src="../js/jquery-2.1.1.min.js" ></script>
+    <script type="text/javascript" src="../js/iscroll.js" ></script>
+    <script type="text/javascript" src="../js/bootstrap.min.js" ></script>
+    <script type="text/javascript" src="../js/layer/layer.js"></script>
+    <script type="text/javascript" src="../js/common.js" ></script>
+    <script type="text/javascript" src="../js/admin/fortifyEdite.js"></script>
+</head>
+<body>
+<div class="wrapper">
+    <div class="main-sidebar backColor">
+        <div class="userBox">
+            <div class="user">
+                <img src="../images/huge.jpg" alt="用户"/>
+            </div>
+            <p class="userName">我就是我</p>
+        </div>
+        <div class="infoList clearfix">
+            <div class="info">
+                <p>绑定</p>
+                <p class="number">5</p>
+            </div>
+            <div class="info">
+                <p>设防</p>
+                <p class="number">5</p>
+            </div>
+            <div class="info">
+                <p>失防</p>
+                <p class="number">5</p>
+            </div>
+        </div>
+        <div class="itemList">
+            <ul>
+                <li class="item"><a href="carPosition.html"><span class="points"></span>车辆方位</a></li>
+                <li class="item"><a href="locus.html"><span class="history"></span>历史轨迹</a></li>
+                <li class="item active"><a href="fortifyManage.html"><span class="fortify"></span>设防</a></li>
+                <li class="item"><a href="carManage.html"><span class="manage"></span>车辆管理</a></li>
+                <li class="item"><a href="userManage.html"><span class="datum"></span>账户管理</a></li>
+                <li class="item"><a href="movementManage.html"><span class="news"></span>推送管理</a></li>
+            </ul>
+            <div class="withdraw">退出账号</div>
+        </div>
+    </div>
+    <div class="content-wrapper">
+        <div class="manage clearfix">
+            <div class="manageBox manageL">
+                <a href="fortifySearch.html"><div class="backOpen"></div></a>
+            </div>
+            <div class="manageBox manageR">
+                <div class="searchBox">
+                    <div class="search">
+                        <input type="text" placeholder="请输入检车辆编号">
+                        <span class="searchImg"></span>
+                    </div>
+                </div>
+                <ul class="fortifyList">
+                    <li class="clearfix">
+                        <div class="fortifyL">
+                            <h3 class="fortifyName">绑定报警号码</h3>
+                        </div>
+                        <div class="fortifyR fortifyEdite">
+                                <span class="bianji" id="edite">000</span>
+                        </div>
+                    </li>
+                    <li class="clearfix">
+                        <div class="fortifyL">
+                            <h3 class="fortifyName">震动报警</h3>
+                        </div>
+                        <div class="fortifyR fortifyEdite">
+                            <div class="checkbox checkbox-slider--b-flat checkbox-slider-md">
+                                <label><input type="checkbox" checked><span></span></label>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="clearfix">
+                        <div class="fortifyL">
+                            <h3 class="fortifyName">剪线报警</h3>
+                        </div>
+                        <div class="fortifyR fortifyEdite">
+                            <div class="checkbox checkbox-slider--b-flat checkbox-slider-md">
+                                <label><input type="checkbox"><span></span></label>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="clearfix">
+                        <div class="fortifyL">
+                            <h3 class="fortifyName">自动设防</h3>
+                        </div>
+                        <div class="fortifyR fortifyEdite">
+                            <div class="checkbox checkbox-slider--b-flat checkbox-slider-md">
+                                <label><input type="checkbox"><span></span></label>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--编辑框-->
+    <div class="compiler">
+          <div class="compilerBox">
+              <input type="type" placeholder="请输入报警号码">
+          </div>
+          <div class="btnOpen">
+              <button class="submit">提交</button>
+              <button class="cansle">取消</button>
+          </div>
+    </div>
+</div>
+</body>
+</html>

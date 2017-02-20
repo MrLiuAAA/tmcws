@@ -78,7 +78,7 @@ $(function() {
 				&&endTime==org_endTime
 				&&lineArr.length>=0){
 			/// 三者都一样 不去查询
-			alert('一样');
+			///alert('一样');
 			marker.moveAlong(lineArr, 100);
 			$("#Startbtn").hide();
 			$("#Pausebtn").show();
@@ -120,12 +120,12 @@ $(function() {
 			    		});
 			    		map.setFitView();
 			        	
-			    		$("#guijigaikuang").html("最大速度:"+result.maxspeed+" Km/h <br/> "
-			    								+"最小速度:"+result.minspeed+" Km/h <br/> "
-			    								+"平均速度:"+result.averagespeed+" Km/h <br/>"
-			    								+"行驶总里程:"+result.mileage+" Km <br/>"
-			    								+"行驶总时间:"+result.runningtime);
-			    		
+			    		$("#guijigaikuang").html("<p><span>最大速度:</span>"+result.maxspeed+" Km/h </p> "
+			    								+"<p><span>最小速度:</span>"+result.minspeed+" Km/h </p> "
+			    								+"<p><span>平均速度:</span>"+result.averagespeed+" Km/h </p>"
+			    								+"<p><span>行驶总里程:</span>"+result.mileage+" Km </p>"
+			    								+"<p><span>行驶总时间:</span>"+result.runningtime+"</p>");
+
 			    		 /*]]>*/
 			    		
 			    		marker.moveAlong(lineArr, 100);
@@ -143,29 +143,16 @@ $(function() {
 		
 	}
 	
-	var map = new AMap.Map("container", {
-		resizeEnable : true,
-		center : [ 116.397428, 39.90923 ],
-		zoom : 17
-	});
-	AMap.plugin(['AMap.ToolBar', 'AMap.Scale', 'AMap.OverView'],
-	        function () {
- 			map.addControl(new AMap.ToolBar());
- 			map.addControl(new AMap.Scale());
- 			map.addControl(new AMap.OverView({ isOpen: true }));}
-			); 
-	map.on("complete", completeEventHandler);
-	AMap.event.addDomListener(document.getElementById('start'), 'click',
-			function() {
-				marker.moveAlong(lineArr, 500);
-			}, false);
-	AMap.event.addDomListener(document.getElementById('stop'), 'click',
-			function() {
-				marker.stopMove();
-			}, false);
 
-	// 地图图块加载完毕后执行函数
-	function completeEventHandler() {
-		//$("#guijigaikuang").html("ddddddd");
-	}
+
+	// AMap.event.addDomListener(document.getElementById('start'), 'click',
+	// 		function() {
+	// 			marker.moveAlong(lineArr, 500);
+	// 		}, false);
+	// AMap.event.addDomListener(document.getElementById('stop'), 'click',
+	// 		function() {
+	// 			marker.stopMove();
+	// 		}, false);
+
+
 });

@@ -20,20 +20,14 @@
  *****************************************************************/
 package com.qqd.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
+import com.qqd.Const;
+import com.qqd.model.User;
+import com.qqd.service.UserService;
+import com.qqd.shiro.TMCWSToken;
+import com.qqd.utils.PageData;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.ExcessiveAttemptsException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.LockedAccountException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,12 +37,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.alibaba.fastjson.JSON;
-import com.qqd.Const;
-import com.qqd.model.User;
-import com.qqd.service.UserService;
-import com.qqd.utils.PageData;
-import com.qqd.utils.security.AccountShiroUtil;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @ClassName LoginController
@@ -69,8 +61,13 @@ public class LoginController extends BaseController<User>{
 		
 		return "redirect:/backstage/index";
 	}
+	@RequestMapping("/admin")
+	public String admin(){
+
+		return "redirect:/admin/index";
+	}
 	/**
-	 * 访问登录页
+	 * 访问用户登录页
 	 * @return
 	 */
 	@RequestMapping("/loginIndex")
@@ -78,6 +75,18 @@ public class LoginController extends BaseController<User>{
 		ModelAndView mv =  new ModelAndView();
 		mv.setViewName("login");
 		
+		return mv;
+	}
+
+	/**
+	 * 管理员 登录页面
+	 * @return
+	 */
+	@RequestMapping("/adminLoginIndex")
+	public ModelAndView adminLoginIndex(){
+		ModelAndView mv =  new ModelAndView();
+		mv.setViewName("slogin");
+
 		return mv;
 	}
 	/**
@@ -108,17 +117,13 @@ public class LoginController extends BaseController<User>{
 			}else{
 				if(StringUtils.isNotEmpty(sessionCode) && sessionCode.equalsIgnoreCase(code)){										
 					// shiro加入身份验证
-					UsernamePasswordToken token = new UsernamePasswordToken(username, password.toUpperCase());
+					//UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+					TMCWSToken token = new TMCWSToken(username, password,"user");
 					token.setRememberMe(true);
 					try {
 						if (!currentUser.isAuthenticated()) {
 							currentUser.login(token);
-						}	
-						//记录登录日志
-//						String accountId=AccountShiroUtil.getCurrentUser().getAccountId();
-//						String loginIP=IPUtil.getIpAddr(getRequest());//获取用户登录IP
-//						LoginLog loginLog=new LoginLog(accountId,loginIP);
-//						loginLogService.saveLoginLog(loginLog);
+						}
 					} catch (UnknownAccountException uae) {
 						errInfo = "用户名或密码有误";// 用户名或密码有误
 					} catch (IncorrectCredentialsException ice) {
@@ -147,9 +152,79 @@ public class LoginController extends BaseController<User>{
 		}	
 		map.put("result", errInfo);
 		
+		System.out.println("登录结果："+map);
+		return map;
+	}
+
+	/**
+	 * 管理员登录
+	 */
+	@RequestMapping(value="/admin_login",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> adminLogin()throws Exception{
+		Map<String,Object> map = new HashMap<String,Object>();
+		PageData pd = this.getPageData();
+		String errInfo = "";
+
+		String username = pd.getString("username");
+		String password = pd.getString("password");
+		String code = pd.getString("verifyCode");
+
+		System.out.println(username + "  " +password);
+		if(null != username && null != password &&null != code){
+			//shiro管理的session
+			Subject currentUser = SecurityUtils.getSubject();
+			Session session = currentUser.getSession();
+			String sessionCode = (String)session.getAttribute(Const.SESSION_SECURITY_CODE);		//获取session中的验证码
+
+			if(null == code || "".equals(code)){
+				errInfo = "nullcode"; //验证码为空
+			}else if(StringUtils.isEmpty(username)||StringUtils.isEmpty(password)){
+				errInfo = "nullup";	//缺少用户名或密码
+			}else{
+				if(StringUtils.isNotEmpty(sessionCode) && sessionCode.equalsIgnoreCase(code)){
+					// shiro加入身份验证
+					TMCWSToken token = new TMCWSToken(username, password,"admin");
+					token.setRememberMe(true);
+					try {
+						if (!currentUser.isAuthenticated()) {
+							currentUser.login(token);
+						}
+					} catch (UnknownAccountException uae) {
+						errInfo = "用户名或密码有误";// 用户名或密码有误
+					} catch (IncorrectCredentialsException ice) {
+						errInfo = "密码错误"; // 密码错误
+					} catch (LockedAccountException lae) {
+						errInfo = "inactive";// 未激活
+					} catch (ExcessiveAttemptsException eae) {
+						errInfo = "错误次数过多";// 错误次数过多
+					} catch (AuthenticationException ae) {
+						errInfo = "验证未通过";// 验证未通过
+					}
+					// 验证是否登录成功
+					if (!currentUser.isAuthenticated()) {
+						token.clear();
+					}
+				}else{
+					errInfo = "验证码输入有误";				 	//验证码输入有误
+				}
+				if(StringUtils.isEmpty(errInfo)){
+					errInfo = "success";					//验证成功
+					session.removeAttribute(Const.SESSION_SECURITY_CODE);//移除SESSION的验证
+				}
+			}
+		}else{
+			errInfo = "缺少参数";	//缺少参数
+		}
+		map.put("result", errInfo);
+
 		System.out.println(map);
 		return map;
-	}		
+	}
+
+
+
+
 	  /**
      * 帐号注销
      * @return
@@ -160,6 +235,7 @@ public class LoginController extends BaseController<User>{
         currentUser.logout();
         session = request.getSession(true);
         session.removeAttribute(Const.SESSION_USER);
+		session.removeAttribute(Const.SESSION_ADMIN_USER);
 		session.removeAttribute(Const.SESSION_MENULIST);
         return "redirect:loginIndex";
     }

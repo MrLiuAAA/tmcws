@@ -1,5 +1,8 @@
 package com.qqd.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.qqd.Const;
 import com.qqd.dao.NoticeDao;
 import com.qqd.model.Notice;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,5 +23,23 @@ public class NoticeServiceImp implements NoticeService {
     public List<Notice> findNoticesByUserName(String username) {
 
         return noticeDao.findNoticesByUserName(username);
+    }
+
+
+    public PageInfo<Notice> findNoticesByUserNameByPage(String userName, String pageNum){
+
+        com.github.pagehelper.Page<Notice> pageHelper =  PageHelper.startPage(new Integer(pageNum), Const.PAGE_SIZE);
+
+        return new PageInfo<Notice>(noticeDao.findNoticesByUserName(userName));
+    }
+
+    public boolean deleteNoitce(String noticeid){
+
+        return noticeDao.deleteById(noticeid)>0;
+    }
+
+    public boolean deleteAllNoitceByUserName(String username){
+
+        return noticeDao.deleteByUserName(username)>0;
     }
 }

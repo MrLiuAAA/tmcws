@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <title>天目-车辆编辑</title>
+    <thymeleaf th:include="common :: css" th:remove="tag"/>
+    <thymeleaf th:include="common :: js" th:remove="tag"/>
+
+</head>
+<body>
+<div class="wrapper">
+    <thymeleaf th:include="main_sidebar :: main" th:remove="tag"/>
+
+    <div class="content-wrapper">
+        <div class="manage clearfix">
+            <div class="manageBox manageL">
+                <a href="javascript:history.go(-1)"><div class="backOpen"></div></a>
+            </div>
+            <div class="manageBox manageR">
+
+                <input type="hidden" id="sn" th:value="${sn}" />
+                <ul class="fortifyList">
+                    <li class="clearfix">
+                        <div class="fortifyL">
+                            <h3 class="fortifyName">绑定报警号码</h3>
+                        </div>
+                        <div class="fortifyR fortifyEdite">
+                            <span class="bianji" id="edite" th:text="${alertphone}">000</span>
+                        </div>
+                    </li>
+                    <li class="clearfix">
+                        <div class="fortifyL">
+                            <h3 class="fortifyName">震动报警</h3>
+                        </div>
+                        <div class="fortifyR fortifyEdite">
+                            <div class="checkbox checkbox-slider--b-flat checkbox-slider-md">
+                                <label><input type="checkbox" id="zdbj" th:checked="${shockalert}=='Y'" onchange="changeStatus(this)" /><span></span></label>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="clearfix">
+                        <div class="fortifyL">
+                            <h3 class="fortifyName">剪线报警</h3>
+                        </div>
+                        <div class="fortifyR fortifyEdite">
+                            <div class="checkbox checkbox-slider--b-flat checkbox-slider-md">
+                                <label><input type="checkbox" id="jxbj" th:checked="${cuttinglinealert}=='Y'" onchange="changeStatus(this)"/><span></span></label>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="clearfix">
+                        <div class="fortifyL">
+                            <h3 class="fortifyName">自动设防</h3>
+                        </div>
+                        <div class="fortifyR fortifyEdite">
+                            <div class="checkbox checkbox-slider--b-flat checkbox-slider-md">
+                                <label><input type="checkbox" id="zdsf" th:checked="${autoalert}=='Y'" onchange="changeStatus(this)"/><span></span></label>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--编辑框-->
+    <div class="compiler">
+        <div class="compilerBox">
+            <input type="type" placeholder="请输入报警号码" id="alertphone" th:value="${alertphone}"/>
+        </div>
+        <div class="btnOpen">
+            <button class="submit">提交</button>
+            <button class="cansle">取消</button>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript">
+
+    $("#guard_li").addClass("active");
+
+    $("#edite").on('click',function(){
+        layer.open({
+            type: 1,
+            title:'修改报警号码',
+            skin: 'layui-layer-rim', //加上边框
+            area: ['300px', '200px'], //宽高
+            content: $(".compiler")
+        });
+    });
+    $(".cansle").on('click',function(){
+        layer.closeAll();
+    })
+
+    $(".submit").on('click',function(){
+        var ii = layer.load();
+        $.ajax({
+            type : 'POST',
+            url : '/backstage/changeStatus',
+            data : {
+                'status' : $('#alertphone').val(),
+                'sn' : $('#sn').val(),
+                'fieldName' : 'alertphone'
+            },
+            dataType : 'json',
+            success : function(data, textStatus) {
+                layer.close(ii);
+                layer.closeAll();
+
+                var result = data.result;
+                if ("success" != result) {
+                    alert(result);
+                } else {
+                    window.location.reload();//刷新当前页面.
+                }
+            }
+        });
+
+
+    })
+
+
+</script>
+<script th:src="@{/js/system/fortifyedite.js}"></script>
+</body>
+</html>

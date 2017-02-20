@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <title>天目-注册用户管理</title>
+    <thymeleaf th:include="common :: css" th:remove="tag"/>
+    <thymeleaf th:include="common :: js" th:remove="tag"/>
+</head>
+<body>
+<div class="wrapper">
+
+    <thymeleaf th:include="main_sidebar :: main" th:remove="tag"/>
+
+    <div class="content-wrapper">
+        <div class="manage clearfix">
+            <div class="manageBox manageL">
+                <a href="javascript:history.go(-1)"><div class="backOpen"></div></a>
+                <!--<a href="userEdite.html"><div class="addOpen"></div></a>-->
+            </div>
+            <div class="manageBox manageR">
+                <table class="table table-hover">
+                    <tbody id="dataList">
+
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--<h3 class="carName">法拉利2号</h3>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--<div class="open">-->
+                                <!--<span class="modify"></span>-->
+                                <!--<span class="delete"></span>-->
+                            <!--</div>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--<h3 class="carName">法拉利3号</h3>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--<div class="open">-->
+                                <!--<span class="modify"></span>-->
+                                <!--<span class="delete"></span>-->
+                            <!--</div>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    </tbody>
+                </table>
+                <div class="page">
+                    <div class="pageList">
+                        <nav>
+                            <ul class="pagination" id="pagination">
+
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $("#account_li").addClass("active");
+</script>
+<script th:src="@{/js/system/membermanager.js}"></script>
+</body>
+</html>

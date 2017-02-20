@@ -29,11 +29,13 @@
  *****************************************************************/
 package com.qqd.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.qqd.Const;
 import com.qqd.dao.UserDao;
 import com.qqd.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
 * @author 作者 E-mail:
@@ -67,8 +69,27 @@ public class UserServiceImp implements UserService {
 	}
 
 	@Override
+	public PageInfo<User> findAllUsers(String page){
+
+		com.github.pagehelper.Page<User> pageHelper =  PageHelper.startPage(new Integer(page), Const.PAGE_SIZE);
+
+		return new PageInfo<User>(userDao.findAllUsers());
+	}
+
+	public Boolean deleteUser(String userid){
+		return userDao.delete(userid)>0;
+	}
+
+
+	@Override
 	public boolean updateUserInfo(User user) {
 		Integer a = userDao.updateUserInfo(user);
+		return a>0;
+	}
+
+	@Override
+	public boolean updateUserAvatar(User user) {
+		Integer a = userDao.updateUserAvatar(user);
 		return a>0;
 	}
 }

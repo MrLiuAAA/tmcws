@@ -1,9 +1,5 @@
 package com.qqd;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import com.qqd.service.CarService;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -55,7 +51,7 @@ public class AlertJob implements Job {
 		////  时间到了 将设防开启或者关闭
 
 
-		carService.changeCarStatus(username, alertstatus, sn, "alertstatus");
+		carService.changeCarStatus(alertstatus, sn, "alertstatus");
 
 		/**
 		 * 设防：*HQ,8696010765,SCF,113032,0,0#

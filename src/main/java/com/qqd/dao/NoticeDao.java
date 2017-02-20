@@ -29,7 +29,6 @@
  *****************************************************************/
 package com.qqd.dao;
 
-import com.qqd.model.Car;
 import com.qqd.model.Notice;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -40,4 +39,10 @@ import java.util.List;
 @Mapper
 public interface NoticeDao {
 	public List<Notice> findNoticesByUserName(@Param("username") String username);
+
+
+
+	public Integer deleteById(@Param("noticeid") String noticeid);
+
+	public Integer deleteByUserName(@Param("username") String username);
 }

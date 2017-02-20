@@ -1,88 +1,60 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
-<meta http-equiv="Pragma" content="no-cache"/> 
-<meta http-equiv="Cache-Control" content="no-cache"/> 
-<meta http-equiv="Expires" content="0"/> 
-<script th:src="@{js/jquery-1.8.3.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/jquery.tips.js}"></script>
-<script th:src="@{/js/jquery-ui.min.js}"></script>
-<link rel="stylesheet" th:href="@{/js/jquery-ui.min.css}" />
-<script th:src="@{js/jy.main.js}"></script>
+		<meta charset="UTF-8"/>
+		<title>天目网-登录</title>
+    <link rel="stylesheet" th:href="@{/css/public.css}" />
+    <link rel="stylesheet" th:href="@{/css/login.css}" />
 
-<link rel="stylesheet" th:href="@{/css/login.css}" />
+    <link rel="stylesheet" th:href="@{/js/jquery-ui.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
 
-<script type="text/javascript">
+    <style type="text/css">
+        .title-no-close .ui-dialog-titlebar-close{display: none;}
+        .loading-no-close .ui-dialog-titlebar{display: none;}
+        .loading-no-close{background:#fff;filter: alpha(opacity = 50);background-color: rgba(0,0,0,0.5) !important;color:#ff892a;border:0px !important;}
+        .loading-no-close .ui-dialog-content{padding: 0 !important;margin-top: 2px;margin-bottom: 2px;}
+    </style>
 
-//刷新验证码
-function getVerifyCode() {
-	$("#yzmpic").attr("src", "verifyCode/slogin.do?random=" + Math.random());
-}
-$(function () {
-	getVerifyCode();
-	$("#yzmpic").click(function () {
-		getVerifyCode();
-	});
-	
-	//登录
-	$("#loginBtn").click(function () {
-		 
-		if("" == $("#username").val()){
-			$("#username").focus();
-		}else if("" == $("#password").val()){
-			$("#password").focus();
-		}else if("" == $("#yzm").val()){
-			$("#yzm").focus();
-		}else{
-			var loginname = $("#username").val();
-			var password = $("#password").val();
-			var verifyCode=$("#yzm").val();
-			 
-			$.ajax({type:'POST',url:'/system_login',data:{'username':loginname,'password':password,'verifyCode':verifyCode},
-		            dataType:'json',success:function(data, textStatus) {
-		            	var result=data.result;
-		            	if ("success" != result) {  //如果登录不成功，则再次刷新验证码
-							alert(result);
-							getVerifyCode();
-						}else{
-							window.location.href="/backstage/index";
-						} 
-		            }
-		     });
-		}
-	});
-});
-</script>
 
-<title>后台登录</title> 
+    <script th:src="@{/js/jquery-2.1.1.min.js}"></script>
+	<script th:src="@{/js/jquery.tips.js}"></script>
+	<script th:src="@{/js/jquery-ui.min.js}"></script>
+	<script th:src="@{/js/jy.main.js}"></script>
+    <script th:src="@{/js/system/login.js}"></script>
 
-</head> 
-<body> 
+	<script type="text/javascript" th:src="@{/js/layer/layer.js}"></script>
 
-<div class="login">
-    <div class="message">天目-登录</div>
-    <div id="darkbannerwrap"></div>
-    
-     
-		<input id="username" name="username" placeholder="用户名" required="" type="text"/>
-		<hr class="hr15"/>
-		<input id="password" name="password" placeholder="密码" required="" type="password"/>
-		<hr class="hr15"/>
-        <input id="yzm" name="yzm" placeholder="验证码" required="" type="text"/>
-        	<img id="yzmpic" width="30%;" height="50px;" style="vertical-align: middle;cursor:pointer;" src="" alt="点击修改验证码"/>
-		<hr class="hr15"/>
-		<input id="loginBtn" value="登录" style="width:100%;" type="submit"/>
-		<hr class="hr20"/>
-		
-	 
 
-	
-</div>
 
-<div class="copyright">© 天目 by <a href="" target="_blank">2016</a></div>
 
-</body>
+</head>
+	<body>
+		<div class="login">
+			<div class="message">天目欢迎您－ <span> 登录 </span></div>
+			<div class="wrap"></div>
+			<!--<form method="post" action="">-->
+				<input id="username" name="username" placeholder="请输入用户名" required="required" type="text"/>
+				<hr class="hr15"/>
+				<input id="password" name="password" placeholder="请输入密码" required="required" type="password"/>
+				<hr class="hr15"/>
+				<input id="yzm"  class="yzm" name="yzm" placeholder="请输入验证码" required="required" type="text"/>
+				<img id="yzmpic" class="yzmpic" th:src="@{/images/yanzma.png}" style="vertical-align: middle;cursor:pointer;" alt="点击修改验证码"/>
+				<hr class="hr15"/>
+				<input id="loginBtn" value="登录" style="width:100%;" type="submit"/>
+				<hr class="hr20"/>
+			<!--</form>-->
+		</div>
+		<div class="copyright">
+			<div class="foot">
+				http://user.tiamu.cn&nbsp;©&nbsp;<a href="http://user.tiamu.cn">天目</a> by
+			<a href="" target="_blank">2016</a>
+			</div>
+		</div>
+
+    </body>
+
 </html>

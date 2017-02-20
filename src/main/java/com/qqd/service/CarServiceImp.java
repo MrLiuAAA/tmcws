@@ -29,20 +29,21 @@
  *****************************************************************/
 package com.qqd.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.qqd.Const;
+import com.qqd.dao.CarDao;
+import com.qqd.dao.MessageQueueDao;
+import com.qqd.model.Car;
+import com.qqd.model.MessageQueue;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import com.qqd.dao.MessageQueueDao;
-import com.qqd.model.MessageQueue;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.qqd.dao.CarDao;
-import com.qqd.model.Car;
-import org.springframework.transaction.annotation.Transactional;
-
 /**
 * @author 作者 E-mail:
 * @version 创建时间：2016年11月1日 上午8:45:53
@@ -71,23 +72,29 @@ public class CarServiceImp implements CarService {
 	 */
 	@Override
 	public List<Car> findCarsByUserName(String userName) {
+		return carDao.findCarsByUserName(userName,"");
+	}
 
-		return carDao.findCarsByUserName(userName);
+	@Override
+	public PageInfo<Car> findCarsByUserNameByPage(String userName,String keyword,String pageNum){
+		com.github.pagehelper.Page<Car> pageHelper =  PageHelper.startPage(new Integer(pageNum), Const.PAGE_SIZE);
+//		carDao.findCarsByUserName(userName);
+
+		return new PageInfo<Car>(carDao.findCarsByUserName(userName,keyword));
 	}
 	
 	@Override
 	public Car findCarBySn(String sn) {
-
 		return carDao.findCarBySn(sn);
 	}
 
 	@Override
 	@Transactional
-	public Boolean changeCarStatus(String userName, String status, String sn, String fieldName) {
+	public Boolean changeCarStatus(String status, String sn, String fieldName) {
 
 		Car car = carDao.findCarBySn(sn);
 		String code = car.getCode();
-		Integer r = carDao.changeCarStatus(userName, status, sn, fieldName);
+		Integer r = carDao.changeCarStatus(status, sn, fieldName);
 
 		/**
 		 * 在这里 插入 消息列队
@@ -224,9 +231,45 @@ public class CarServiceImp implements CarService {
 		car.setSn(sn);
 		car.setName(name);
 		car.setUsername(username);
+		try {
+			carDao.saveCar(car);
+		}catch (Exception e){
+			return false;
+		}
 
-		carDao.saveCar(car);
+
 		return car.getId()!=null;
 	}
 
+
+	@Override
+	public List<Car> findAdminCarsByAdminName(String loginname) {
+
+		return carDao.findAdminCarsByAdminName(loginname,"");
+	}
+
+
+
+	public PageInfo<Car> findAdminCarsByAdminNameByPage(String loginname,String keyword,String pageNum){
+
+		com.github.pagehelper.Page<Car> pageHelper =  PageHelper.startPage(new Integer(pageNum), Const.PAGE_SIZE);
+
+		return new PageInfo<Car>(carDao.findAdminCarsByAdminName(loginname,keyword));
+	}
+
+	public PageInfo<Car> findAdminAllCarsByAdminNameByPage(String loginname,String keyword,String pageNum){
+
+		com.github.pagehelper.Page<Car> pageHelper =  PageHelper.startPage(new Integer(pageNum), Const.PAGE_SIZE);
+
+		return new PageInfo<Car>(carDao.findAdminAllCarsByAdminName(loginname,keyword));
+	}
+
+
+
+	public Boolean addCarToAdmin(String loginname, String sn){
+
+		carDao.addCarToAdmin(loginname,sn);
+
+		return true;
+	}
 }

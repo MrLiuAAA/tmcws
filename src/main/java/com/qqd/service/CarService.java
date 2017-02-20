@@ -29,9 +29,10 @@
  *****************************************************************/
 package com.qqd.service;
 
-import java.util.List;
-
+import com.github.pagehelper.PageInfo;
 import com.qqd.model.Car;
+
+import java.util.List;
 
 /**
 * @author 作者 E-mail:
@@ -55,9 +56,23 @@ public interface CarService {
 	 */
 	public List<Car> findCarsByUserName(String userName);
 
-	public Boolean changeCarStatus(String userName, String status, String sn, String fieldName);
+	public PageInfo<Car> findCarsByUserNameByPage(String userName,String keyword,String pageNum);
+
+
+
+	public Boolean changeCarStatus(String status, String sn, String fieldName);
 
 	public Boolean deleteCar(String userName, String sn);
 
 	public Boolean addCar(String username, String sn, String name);
+
+    public List<Car> findAdminCarsByAdminName(String loginname);
+
+	public PageInfo<Car> findAdminCarsByAdminNameByPage(String loginname,String keyword,String page);
+
+	public PageInfo<Car> findAdminAllCarsByAdminNameByPage(String loginname,String keyword,String page);
+
+
+
+    public Boolean addCarToAdmin(String loginname, String sn);
 }

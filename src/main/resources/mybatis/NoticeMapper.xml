@@ -32,4 +32,20 @@
 	</select>
 
 
+	<delete id="deleteById">
+
+		DELETE  FROM notice  WHERE  noticeid = #{noticeid}
+	</delete>
+
+
+	<delete id="deleteByUserName">
+
+		DELETE  FROM  notice WHERE  sn in(
+
+			select b.sn from g_car b WHERE b.username = #{username}
+
+		)
+
+	</delete>
+
 </mapper>

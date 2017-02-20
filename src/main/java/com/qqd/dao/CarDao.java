@@ -29,12 +29,11 @@
  *****************************************************************/
 package com.qqd.dao;
 
-import java.util.List;
-
+import com.qqd.model.Car;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.qqd.model.Car;
+import java.util.List;
 
 /**
  * @ClassName UserDao
@@ -45,14 +44,21 @@ import com.qqd.model.Car;
  */
 @Mapper
 public interface CarDao {
-	public List<Car> findCarsByUserName(@Param("username") String username);
+	public List<Car> findCarsByUserName(@Param("username") String username,@Param("keyword") String keyword);
 
 	public Car findCarBySn(@Param("sn") String sn);
 
-	public Integer changeCarStatus(@Param("username") String username, @Param("status") String status,
+	public Integer changeCarStatus(@Param("status") String status,
 			@Param("sn") String sn, @Param("fieldName") String fieldName);
 
 	public Integer deleteCar(@Param("username") String username, @Param("sn") String sn);
 
 	public void saveCar(Car car);
+
+    List<Car> findAdminCarsByAdminName(@Param("loginname") String loginname,@Param("keyword") String keyword);
+
+	List<Car> findAdminAllCarsByAdminName(@Param("loginname") String loginname,@Param("keyword") String keyword);
+
+
+    public void addCarToAdmin(@Param("loginname") String loginname, @Param("sn") String sn);
 }

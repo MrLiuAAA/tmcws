@@ -5,9 +5,13 @@ package com.qqd;
  * 
 */
 public class Const {
-	
+
+
+	public static final Integer PAGE_SIZE = 8;
+
 	public static final String SESSION_SECURITY_CODE = "sessionSecCode";
-	public static final String SESSION_USER = "sessionUser";            
+	public static final String SESSION_USER = "sessionUser";
+	public static final String SESSION_ADMIN_USER = "sessionAdminUser";
 	public static final String SESSION_MENULIST = "menuList";			//当前菜单
 	/**
 	 *邮箱配置文件位置

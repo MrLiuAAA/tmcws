@@ -1,29 +1,11 @@
-*{
-    font: 13px/1.5 '微软雅黑', Verdana, Helvetica, Arial, sans-serif;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -box-sizing: border-box;
-    padding:0;
-    margin:0;
-    list-style:none;
-    box-sizing: border-box;
-}
-
-body,html{
-    height:100%;
-    overflow:hidden;
-}
+@charset "utf-8";
+/*登录样式*/
 body{
     background:url(../images/web_login_bg.jpg) no-repeat center;
     background-size: cover;
 }
-a{
-    color:#27A9E3;
-    text-decoration:none;
-    cursor:pointer;
-}
 .login{
-    margin: 150px auto 0 auto;
+    margin:10% auto 0 auto;
     min-height: 420px;
     max-width: 420px;
     padding: 40px;
@@ -31,8 +13,10 @@ a{
     margin-left: auto;
     margin-right: auto;
     border-radius: 4px;
-    /* overflow-x: hidden; */
     box-sizing: border-box;
+    box-shadow: 8px 8px 8px #818D9B;
+    -webkit-box-shadow: 8px 8px 8px #818D9B;
+    -moz-box-shadow:8px 8px 8px #818D9B;
 }
 a.logo{
     display: block;
@@ -42,6 +26,7 @@ a.logo{
     background-size: 167px 42px;
 }
 .message {
+	font-family: "黑体";
     margin: 10px 0 0 -58px;
     padding: 18px 10px 18px 60px;
     background: #27A9E3;
@@ -49,18 +34,16 @@ a.logo{
     color: #fff;
     font-size: 16px;
 }
-#darkbannerwrap {
+.message span{font-size: 14px;color:#fff;}
+.wrap {
     background: url(../images/aiwrap.png);
     width: 18px;
     height: 10px;
     margin: 0 0 20px -58px;
     position: relative;
 }
-
 input[type=text],
-input[type=file],
-input[type=password],
-input[type=email], select {
+input[type=password],select {
     border: 1px solid #DCDEE0;
     vertical-align: middle;
     border-radius: 3px;
@@ -72,13 +55,7 @@ input[type=email], select {
     width:100%;
 }
 input[type=text]:focus,
-input[type=file]:focus,
-input[type=password]:focus,
-input[type=email]:focus, select:focus {
-    border: 1px solid #27A9E3;
-}
-
-
+input[type=password]:focus,select:focus {border: 1px solid #27A9E3;}
 input[type=submit],
 input[type=button]{
     display: inline-block;
@@ -115,15 +92,12 @@ hr.hr20 {
 }
 
 .copyright{
+	text-align: center;
     font-size:14px;
     color:rgba(255,255,255,0.85);
     display:block;
-    position:absolute;
-    bottom:15px;
-    right:15px;
+    bottom:0px;
 }
-
-#yzm
-{
-    width:50%;
-}
+.foot{position: relative;display: block;line-height: 40px;color: #333333;}
+.yzm{width:50% !important;display: inline-block;}
+.yzmpic{vertical-align: middle;cursor:pointer;width: 30%;height: 50px;}

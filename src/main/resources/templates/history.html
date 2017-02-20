@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8" />
+	<title>天目-历史轨迹</title>
+	<thymeleaf th:include="common :: css" th:remove="tag"/>
+	<script type="text/javascript" th:src="@{/js/jquery-2.1.1.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}" ></script>
+	<thymeleaf th:include="common :: amapjs" th:remove="tag"/>
+
+	<script type="text/javascript" th:src="@{/js/layer/layer.js}"></script>
+	<script type="text/javascript" th:src="@{/js/DatePicker/WdatePicker.js}"></script>
+</head>
+<body>
+<div class="wrapper">
+
+	<thymeleaf th:include="main_sidebar :: main" th:remove="tag"/>
+	<div class="content-wrapper">
+		<div class="points" id="container">
+
+		</div>
+         <div class="locus clearfix">
+			 <div class="locusTime">
+				 <div class="option">
+					 <label>选择车辆</label>
+					 <select id="mycar">
+						 <option value="1">法拉利1号</option>
+						 <option value="1">法拉利2号</option>
+						 <option value="1">法拉利3号</option>
+						 <option value="1">法拉利4号</option>
+					 </select>
+				 </div>
+				 <div class="option">
+					 <label>开始时间</label>
+					 <input id="startTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'});" type="text"/>
+				 </div>
+				 <div class="option">
+					 <label>结束时间</label>
+					 <input id="endTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'});" type="text"/>
+				 </div>
+			 </div>
+			 <div class="locusInfo">
+				 <div class="survey clearfix">
+					 <div class="surveyTitle">轨迹概况</div>
+					 <div class="surveyInfo" id="guijigaikuang">
+						 <p>车辆：法拉利1号</p>
+						 <p>时间段：2016.08.23 19:30至2016.10.22 22:30</p>
+						 <p><span>最大速度：</span>35km<span>平均速度：</span>4km<span>总里程：15km</span></p>
+						 <p><span>行驶总时间：</span>4小时23分钟</p>
+					 </div>
+				 </div>
+				 <div class="survey clearfix">
+					 <!--<div class="positionTitle">轨迹位置</div>-->
+					 <!--<div class="positionInfo">-->
+						 <!--<p>北京市东城区雍和宫航星园八号楼</p>-->
+					 <!--</div>-->
+				 </div>
+			 </div>
+			 <div class="locusOpen">
+				 <div class="openImg">
+					 <img id="Startbtn" th:src="@{/images/play.png}" alt="播放"/>
+					 <img id="Pausebtn" th:src="@{/images/pause.png}" style="display: none;" alt="暂停"/>
+				 </div>
+			 </div>
+		 </div>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+	$("#histroy_li").addClass("active");
+
+	/*公共js计算页面的宽度*/
+	$(document).ready(function(){
+		$(".content-wrapper").css({'width':$(document).width()-230,'height':$(document).height()});
+		$(window).resize(function () {
+			var height=$(document).height();
+			var width=$(document.body).width()-230;
+			$(".content-wrapper").css({'width':width,'height':height});
+		})
+	})
+
+	var map = new AMap.Map("container", {
+		resizeEnable : true,
+		center : [ 116.397428, 39.90923 ],
+		zoom : 17
+	});
+	map.plugin(['AMap.ToolBar', 'AMap.Scale', 'AMap.OverView'],
+			function () {
+				map.addControl(new AMap.ToolBar());
+				map.addControl(new AMap.Scale());
+				map.addControl(new AMap.OverView({ isOpen: true }));}
+	);
+	map.on("complete", completeEventHandler);
+	// 地图图块加载完毕后执行函数
+	function completeEventHandler() {
+		//$("#guijigaikuang").html("ddddddd");
+//		alert('ok');
+	}
+
+</script>
+<script th:src="@{/js/system/history.js}"></script>
+
+</body>
+</html>

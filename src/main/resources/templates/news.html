@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8" />
+	<title>天目-关于我们</title>
+	<thymeleaf th:include="common :: css" th:remove="tag"/>
+	<thymeleaf th:include="common :: js" th:remove="tag"/>
+</head>
+<body>
+<div class="wrapper">
+
+	<thymeleaf th:include="main_sidebar :: main" th:remove="tag"/>
+
+	<div class="content-wrapper">
+				<div class="manage clearfix">
+					<div class="manageBox manageL">
+						<div class="removeOpen" onclick="deleteAll()"></div>
+						<!--<div class="editorOpen"></div>-->
+					</div>
+					<div class="manageBox manageR">
+						<table class="table table-hover news">
+							<tbody id="dataList">
+
+
+
+
+								<!--<tr>-->
+									<!--<td width="20%">-->
+										<!--<h3 class="carName">法拉利1号</h3>-->
+									<!--</td>-->
+									<!--<td width="40%">-->
+										<!--<p>状态：已失效 已断电</p>-->
+										<!--<p>最近记录位置：北京市场昌平区北七家镇温都水城</p>-->
+									<!--</td>-->
+									<!--<td width="10%">-->
+										<!--2016-12-04-->
+									<!--</td>-->
+									<!--<td width="30%">-->
+										<!--<div class="open">-->
+											<!--<span class="battery"></span>-->
+											<!--<span class="restar"></span>-->
+											<!--<span class="delete"></span>-->
+										<!--</div>-->
+									<!--</td>-->
+								<!--</tr>-->
+								<!--<tr>-->
+									<!--<td width="20%">-->
+										<!--<h3 class="carName">法拉利1号</h3>-->
+									<!--</td>-->
+									<!--<td width="40%">-->
+										<!--<p>状态：已失效 已断电</p>-->
+										<!--<p>最近记录位置：北京市场昌平区北七家镇温都水城</p>-->
+									<!--</td>-->
+									<!--<td width="10%">-->
+										<!--2016-12-04-->
+									<!--</td>-->
+									<!--<td width="30%">-->
+										<!--<div class="open">-->
+											<!--<span class="battery"></span>-->
+											<!--<span class="restar"></span>-->
+											<!--<span class="delete"></span>-->
+										<!--</div>-->
+									<!--</td>-->
+								<!--</tr>-->
+								<!--<tr>-->
+									<!--<td width="20%">-->
+										<!--<h3 class="carName">法拉利1号</h3>-->
+									<!--</td>-->
+									<!--<td width="40%">-->
+										<!--<p>状态：已失效 已断电</p>-->
+										<!--<p>最近记录位置：北京市场昌平区北七家镇温都水城</p>-->
+									<!--</td>-->
+									<!--<td width="10%">-->
+										<!--2016-12-04-->
+									<!--</td>-->
+									<!--<td width="30%">-->
+										<!--<div class="open">-->
+											<!--<span class="battery"></span>-->
+											<!--<span class="restar"></span>-->
+											<!--<span class="delete"></span>-->
+										<!--</div>-->
+									<!--</td>-->
+								<!--</tr>-->
+								<!--<tr>-->
+									<!--<td width="20%">-->
+										<!--<h3 class="carName">法拉利1号</h3>-->
+									<!--</td>-->
+									<!--<td width="40%">-->
+										<!--<p>状态：已失效 已断电</p>-->
+										<!--<p>最近记录位置：北京市场昌平区北七家镇温都水城</p>-->
+									<!--</td>-->
+									<!--<td width="10%">-->
+										<!--2016-12-04-->
+									<!--</td>-->
+									<!--<td width="30%">-->
+										<!--<div class="open">-->
+											<!--<span class="battery"></span>-->
+											<!--<span class="restar"></span>-->
+											<!--<span class="delete"></span>-->
+										<!--</div>-->
+									<!--</td>-->
+								<!--</tr>-->
+							</tbody>
+						</table>
+						<div class="page">
+							<div class="pageList">
+								<nav>
+									<ul class="pagination" id="pagination">
+										<li><a href="#">首页</a></li>
+										<li><a href="#">上一页</a></li>
+										<li><a href="#">1</a></li>
+										<li><a href="#">2</a></li>
+										<li><a href="#">3</a></li>
+										<li><a href="#">4</a></li>
+										<li><a href="#">5</a></li>
+										<li><a href="#">下一页</a></li>
+										<li><a href="#">尾页</a></li>
+									</ul>
+								</nav>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	<script type="text/javascript">
+
+		$("#news_li").addClass("active");
+
+	</script>
+<script th:src="@{/js/system/news.js}"></script>
+	</body>
+</html>

@@ -1,19 +1,16 @@
 package com.qqd.shiro;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.apache.shiro.web.servlet.SimpleCookie;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 /**
  *  Shiro 配置
  *	Apache Shiro 核心通过 Filter 来实现，就好像SpringMvc 通过DispachServlet 来主控制一样。
@@ -95,7 +92,9 @@ public class ShiroConfig {
        //配置退出过滤器,其中的具体的退出代码Shiro已经替我们实现了
        filterChainDefinitionMap.put("/logout", "logout");
       
-//       //配置记住我或认证通过可以访问的地址  	  
+//       //配置记住我或认证通过可以访问的地址
+        filterChainDefinitionMap.put("/second/**", "anon");
+        filterChainDefinitionMap.put("/admin/**", "anon");
         filterChainDefinitionMap.put("/css/**", "anon");
       	filterChainDefinitionMap.put("/js/**", "anon");
       	filterChainDefinitionMap.put("/bootstrap/**", "anon");
@@ -104,7 +103,8 @@ public class ShiroConfig {
       	filterChainDefinitionMap.put("/verifyCode/**", "anon");
       	filterChainDefinitionMap.put("/system_login", "anon");
 //       filterChainDefinitionMap.put("/index", "user");
-//       filterChainDefinitionMap.put("/", "user");
+       filterChainDefinitionMap.put("/adminLoginIndex", "anon");
+        filterChainDefinitionMap.put("/admin_login", "anon");
        
        //<!-- 过滤链定义，从上向下顺序执行，一般将 /**放在最为下边 -->:这是一个坑，一不小心代码就不好使了;
         //<!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->

@@ -7,6 +7,12 @@
 		FROM g_car
 		t
 		WHERE t.username = #{username}
+		<if test="keyword!= null and keyword!= ''">
+			AND (
+			t.name LIKE CONCAT('%',#{keyword},'%')
+			OR t.sn LIKE CONCAT('%',#{keyword},'%')
+			)
+		</if>
 	</select>
 
 	<select id="findCarBySn" resultType="com.qqd.model.Car">
@@ -21,7 +27,7 @@
 		update g_car
 		set ${fieldName} =#{status}
 		where
-		username = #{username} and sn =#{sn}
+		sn =#{sn}
 	</update>
 
 	<delete id="deleteCar">
@@ -34,4 +40,53 @@
 		INSERT INTO g_car (sn,username,`name`,status) VALUES (#{sn},#{username},#{name},"未设防")
 
 	</insert>
+
+
+	<select id="findAdminCarsByAdminName" resultType="com.qqd.model.Car">
+
+		select b.* from adminuser a join
+		(
+			SELECT n.adminid,m.* from admincar n join g_car m on n.sn = m.sn
+		) b on a.id = b.adminid where a.loginname = #{loginname}
+		<if test="keyword!= null and keyword!= ''">
+			AND (
+			b.name LIKE CONCAT('%',#{keyword},'%')
+			OR b.sn LIKE CONCAT('%',#{keyword},'%')
+			)
+		</if>
+	</select>
+
+
+
+	<insert id="addCarToAdmin">
+
+		INSERT  INTO admincar (adminid,sn)
+
+
+		SELECT id,'${sn}' AS `sn` FROM adminuser WHERE loginname = #{loginname}
+
+
+	</insert>
+
+
+
+	<select id="findAdminAllCarsByAdminName" resultType="com.qqd.model.Car">
+
+		select b.* from adminuser a join
+		(
+		SELECT n.adminid,n.sn,m.id,m.name,m.username,m.power,m.status,m.alertstatus,m.autoalert,m.latitude,m.longitude,m.alertphone,m.shockalert,
+		m.cuttinglinealert,m.callnotification,m.restartflag
+		from admincar n LEFT join g_car m on n.sn = m.sn
+		) b on a.id = b.adminid
+		where a.loginname = #{loginname}
+		<if test="keyword!= null and keyword!= ''">
+			AND (
+			b.name LIKE CONCAT('%',#{keyword},'%')
+			OR b.sn LIKE CONCAT('%',#{keyword},'%')
+			)
+		</if>
+	</select>
+
+
+
 </mapper>

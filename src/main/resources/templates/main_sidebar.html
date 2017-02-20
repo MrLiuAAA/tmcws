@@ -1,0 +1,57 @@
+<thymeleaf xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+		   th:fragment="main">
+	<div class="main-sidebar backColor">
+		<div class="userBox">
+			<div class="user">
+				<img src="/images/huge.jpg" th:src="${session.avatar}" alt="用户"/>
+			</div>
+			<!--/*@thymesVar id="userName1" type="java.lang.String"*/-->
+			<p class="userName" th:text="${session.nickName}"></p>
+		</div>
+		<div class="infoList clearfix">
+			<div class="info">
+				<p>绑定</p>
+				<!--/*@thymesVar id="bingNum" type="java.lang.String"*/-->
+				<p class="number" th:text="${session.bingNum}">0</p>
+			</div>
+			<div class="info">
+				<p>设防</p>
+				<!--/*@thymesVar id="alertNum" type="java.lang.String"*/-->
+				<p class="number" th:text="${session.alertNum}">0</p>
+			</div>
+			<div class="info">
+				<p>失防</p>
+				<!--/*@thymesVar id="lostNum" type="java.lang.String"*/-->
+				<p class="number" th:text="${session.lostNum}">0</p>
+			</div>
+		</div>
+		<div class="itemList">
+			<ul>
+				<li id="position_li" class="item"><a href="/backstage/index"><span class="points"></span>车辆方位</a></li>
+				<li id="histroy_li" class="item"><a href="/backstage/positionHistory"><span class="history"></span>历史轨迹</a></li>
+				<li id="guard_li" class="item"><a href="/backstage/setGuard"><span class="fortify"></span>设防</a></li>
+				<li id="manage_li" class="item"><a href="/backstage/carManage"><span class="manage"></span>车辆管理</a></li>
+
+
+				<!--/*@thymesVar id="role" type="java.lang.String"*/-->
+				<th:themleaf th:if="${session.role=='user'}" th:remove="tag">
+					<li id="person_li" class="item"><a href="/backstage/person"><span class="datum"></span>个人资料</a></li>
+					<li id="news_li" class="item"><a href="/backstage/news"><span class="news"></span>消息推送</a></li>
+				</th:themleaf>
+
+				<th:themleaf th:if="${session.role=='superAdmin'}" th:remove="tag">
+					<li id="account_li" class="item"><a href="/backstage/account"><span class="datum"></span>账户管理</a></li>
+					<!--<li id="push_li" class="item"><a href="/backstage/push"><span class="news"></span>推送管理</a></li>-->
+				</th:themleaf>
+
+
+
+
+
+				<li id="aoubt_li" class="item"><a href="/backstage/aboutUs"><span class="about"></span>关于我们</a></li>
+			</ul>
+
+			<div class="withdraw"><a th:href="@{/system_logout}">退出账号</a></div>
+		</div>
+	</div>
+</thymeleaf>

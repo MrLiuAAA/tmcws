@@ -7,9 +7,18 @@
 	<resultMap type="com.qqd.model.User" id="userMap" autoMapping="true">
 	
 		<result column="username" property="username"/>
-		<association property="cars" column="username" select="com.qqd.dao.CarDao.findCarsByUserName"></association>
+		<association property="cars" column="username"  select="findCarsByUserName"></association>
+		<collection property="cars" column="username" select="findCarsByUserName"/>
 	</resultMap>
-	
+
+	<select id="findCarsByUserName" resultType="com.qqd.model.Car">
+		SELECT t.*
+		FROM g_car
+		t
+		WHERE t.username = #{username}
+	</select>
+
+
 	<select id="findUserByUserName" resultMap="userMap">
 		SELECT t.* 
 		FROM `user` t
@@ -28,5 +37,24 @@
 	</update>
 
 
+	<update id="updateUserAvatar" parameterType="com.qqd.model.User">
+
+		UPDATE `user`
+
+		SET mypic = #{mypic}
+
+		WHERE userid = #{userid}
+
+	</update>
+
+
+	<select id="findAllUsers" resultMap="userMap">
+
+		SELECT  * FROM `user`
+	</select>
+
+	<delete id="delete">
+		DELETE FROM `user` WHERE userid=#{userid}
+	</delete>
 
 </mapper>
