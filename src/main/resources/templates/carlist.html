@@ -7,6 +7,7 @@
     <title>天目-车辆设防管理</title>
     <thymeleaf th:include="common :: css" th:remove="tag"/>
     <thymeleaf th:include="common :: js" th:remove="tag"/>
+    <script type="text/javascript" th:src="@{/js/ajaxfileupload.js}"></script>
 </head>
 <body>
 <div class="wrapper">
@@ -18,6 +19,7 @@
             <div class="manageBox manageL">
                 <a href="javascript:history.go(-1)"><div class="backOpen"></div></a>
                 <div class="addOpen"  id="addcar_div" style="cursor: pointer"></div>
+                <div class="daoru"  id="inputcar_div" style="cursor: pointer"></div>
             </div>
             <div class="manageBox manageR">
                 <div class="searchBox">
@@ -61,21 +63,37 @@
     </div>
 </div>
 
+<!--导入车辆-->
+<div class="compiler" id="import_div">
+    <div class="compilerBox">
+        <input type="file" id="importFile" name="carExcel" placeholder="导入Excel文件"/>
+    </div>
+    <div class="btnOpen">
+        <button class="submit" id="import_submit">提交</button>
+        <button class="cansle" id="import_cansle">取消</button>
+    </div>
+</div>
+
 <script type="text/javascript">
 
     $("#manage_li").addClass("active");
 
+
+
+
+
+
     $("#addcar_div").on('click',function(){
 
-        $('#carSN').val('');
+    $('#carSN').val('');
 
-        layer.open({
-            type: 1,
-            title:'添加车辆',
-            skin: 'layui-layer-rim', //加上边框
-            area: ['300px', '260px'], //宽高
-            content: $("#add_div")
-        });
+    layer.open({
+        type: 1,
+        title:'添加车辆',
+        skin: 'layui-layer-rim', //加上边框
+        area: ['300px', '260px'], //宽高
+        content: $("#add_div")
+    });
     });
     $("#add_cansle").on('click',function(){
         layer.closeAll();

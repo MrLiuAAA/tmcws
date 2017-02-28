@@ -47,6 +47,8 @@ body{height: 100%;width: 100%;}
 .manage .manageL{width: 10%;}
 .manage .manageR{width: 90%;padding: 0 30px;border-left:1px solid #D8D8D9;}
 .manageL .addOpen{background: url(../images/add.png)no-repeat;width: 25px;height: 25px;margin: 20px auto;}
+.manageL .daoru{background: url(../images/guanlian.png)no-repeat;width: 25px;height: 25px;margin: 20px auto;}
+
 .table{width: 100%;height: auto;border: 0;}
 .table tr td{text-align: left;vertical-align: middle;border: 0;}
 .table tr{border-bottom:1px solid #D8D8D9;}

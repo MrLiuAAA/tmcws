@@ -29,6 +29,7 @@
  *****************************************************************/
 package com.qqd.service;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.qqd.Const;
@@ -42,6 +43,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 /**
@@ -271,5 +273,34 @@ public class CarServiceImp implements CarService {
 		carDao.addCarToAdmin(loginname,sn);
 
 		return true;
+	}
+
+	@Transactional
+	public Boolean addCarsToAdmin(String loginname, List<String> sns){
+
+		List<Car> cars = carDao.findAdminAllCarsByAdminName(loginname,"");
+		List<String> carSNs = new ArrayList<>();
+
+		System.out.println(JSON.toJSONString(cars,true));
+
+		for (Car car:cars) {
+			carSNs.add(car.getSn());
+		}
+
+		Boolean y = true;
+		for (String sn:sns) {
+			///  将前两位替换为 20  然后再去掉后三位
+			sn = "20" + sn.substring(2, 10);
+			if (carSNs.contains(sn)){
+				System.out.println("已经存在："+sn);
+			}else{
+				System.out.println("保存："+sn);
+				Integer r = carDao.addCarToAdmin(loginname,sn);
+				y = (r==1);
+			}
+
+		}
+
+		return y;
 	}
 }

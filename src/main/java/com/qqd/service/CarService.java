@@ -75,4 +75,5 @@ public interface CarService {
 
 
     public Boolean addCarToAdmin(String loginname, String sn);
+	public Boolean addCarsToAdmin(String loginname, List<String> sns);
 }

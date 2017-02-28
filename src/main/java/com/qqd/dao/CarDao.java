@@ -60,5 +60,5 @@ public interface CarDao {
 	List<Car> findAdminAllCarsByAdminName(@Param("loginname") String loginname,@Param("keyword") String keyword);
 
 
-    public void addCarToAdmin(@Param("loginname") String loginname, @Param("sn") String sn);
+    public Integer addCarToAdmin(@Param("loginname") String loginname, @Param("sn") String sn);
 }

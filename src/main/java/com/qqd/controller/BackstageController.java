@@ -27,6 +27,7 @@ import com.github.pagehelper.PageInfo;
 import com.qqd.AjaxRes;
 import com.qqd.model.*;
 import com.qqd.service.*;
+import com.qqd.utils.ExcelUtils;
 import com.qqd.utils.MD5Util;
 import com.qqd.utils.PageData;
 import com.qqd.utils.security.AccountShiroUtil;
@@ -42,10 +43,7 @@ import sun.misc.BASE64Decoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -778,34 +776,67 @@ public class BackstageController extends BaseController<User> {
 
 
 	// 添加
-	@RequestMapping(method = RequestMethod.POST, value = "uploadImg1")
+	@RequestMapping(method = RequestMethod.POST, value = "importExcel")
 	@ResponseBody
-	public AjaxRes uploadImg1(@RequestParam(value="avatar",required=true) MultipartFile file , HttpServletRequest request) {
-		AjaxRes ar = new AjaxRes();
+	public Map<String, Object> importExcel(@RequestParam(value="carExcel",required=true) MultipartFile file , HttpServletRequest request) {
+		Map<String, Object> map = new HashMap<String, Object>();
 
+		try {
+			String loginname = request.getParameter("loginname");
+			String name = file.getOriginalFilename();
+			InputStream inputStream = null;
 
-		System.out.println("json: \n"+JSON.toJSONString(file,true));
+			inputStream = file.getInputStream();
 
-
-		File imgFile = new File("/Users/liujianyang/Desktop/test/"+file.getOriginalFilename());
-
-		if (!file.isEmpty()) {
+			ExcelUtils utils = new ExcelUtils(inputStream,name);
+			List<String> sns = null;
 			try {
-				byte[] bytes = file.getBytes();
-				BufferedOutputStream stream =
-						new BufferedOutputStream(new FileOutputStream(imgFile));
-				stream.write(bytes);
-				stream.close();
-				ar.setSucceedMsg("success");
-//				return "You successfully uploaded " + name + " into " + name + "-uploaded !";
-			} catch (Exception e) {
-//				return "You failed to upload " + name + " => " + e.getMessage();
-			}
-		} else {
-//			return "You failed to upload " + name + " because the file was empty.";
+				sns = utils.getSNs();
 
+				Boolean y = true;
+				String wrongSN = "";
+				for (String sn:sns) {
+
+					if (serialsNumberService.validateSN(sn)) {
+					} else {
+						y=false;
+						wrongSN = sn;
+						break;
+					}
+				}
+
+
+				if (y){
+					Boolean result = carService.addCarsToAdmin(loginname, sns);
+					System.out.println("result = " + result);
+					map.put("result", result ? "success" : "failure");
+					if (result) {
+						map.put("msg", "添加失败");
+					}
+				}else{
+					map.put("result", "failure");
+					map.put("msg", "序列号："+wrongSN+"验证失败");
+				}
+
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				map.put("result", "failure");
+				map.put("msg", "解析文件出错！");
+			}
+
+
+
+
+
+			////  在这里读取出 要导入的车辆信息
+		} catch (IOException e) {
+			e.printStackTrace();
+			map.put("result", "failure");
+			map.put("msg", "保存失败");
 		}
-			return ar;
+
+		return map;
 
 	}
 
