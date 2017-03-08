@@ -15,6 +15,11 @@
 		WHERE t.loginname = #{loginname}
 	</select>
 
+
+	<delete id="deleteAdmin">
+		delete from `adminuser`  where loginname = #{loginname}
+	</delete>
+
 	<select id="findSuperAdmin" resultMap="userMap">
 		SELECT t.*
 		FROM `adminuser` t

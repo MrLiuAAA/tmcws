@@ -55,4 +55,6 @@ public interface AdminUserDao {
     public List<AdminUser> findAdmin();
 
     public void save(AdminUser user);
+
+    public Integer deleteAdmin(@Param("loginname")  String loginname);
 }

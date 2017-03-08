@@ -57,8 +57,16 @@ public interface CarDao {
 
     List<Car> findAdminCarsByAdminName(@Param("loginname") String loginname,@Param("keyword") String keyword);
 
+	List<Car> findAllCars(@Param("keyword") String keyword);
+
+
+
 	List<Car> findAdminAllCarsByAdminName(@Param("loginname") String loginname,@Param("keyword") String keyword);
 
 
     public Integer addCarToAdmin(@Param("loginname") String loginname, @Param("sn") String sn);
+
+    public Integer deleteCarBySn(@Param("sn") String sn);
+
+    public void deleteAdminCarsByAdminName(@Param("loginname") String loginname);
 }

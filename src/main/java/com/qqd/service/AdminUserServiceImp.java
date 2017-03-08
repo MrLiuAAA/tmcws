@@ -4,9 +4,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.qqd.Const;
 import com.qqd.dao.AdminUserDao;
+import com.qqd.dao.CarDao;
 import com.qqd.model.AdminUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by liujianyang on 2017/1/7.
@@ -16,6 +18,8 @@ public class AdminUserServiceImp implements AdminUserService {
 
     @Autowired
     private AdminUserDao adminUserDao;
+    @Autowired
+    private CarDao carDao;
 
     @Override
     public AdminUser findAdminUserByName(String loginName) {
@@ -47,5 +51,14 @@ public class AdminUserServiceImp implements AdminUserService {
         adminUserDao.save(user);
 
         return user;
+    }
+
+    @Override
+    @Transactional
+    public Boolean deleteAdmin(String loginname){
+
+        carDao.deleteAdminCarsByAdminName(loginname);
+
+        return adminUserDao.deleteAdmin(loginname)>0;
     }
 }

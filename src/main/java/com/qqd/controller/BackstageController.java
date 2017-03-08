@@ -91,8 +91,12 @@ public class BackstageController extends BaseController<User> {
 			session.setAttribute("role", currentUser.isSuperAdmin()?"superAdmin":"admin");
 			session.setAttribute("avatar",currentUser.getAvatar());
 
-			System.out.println("当前用户：" + JSON.toJSONString(currentUser, true));
-			cars = carService.findAdminCarsByAdminName(currentUser.getLoginname());
+			if (currentUser.isSuperAdmin()){
+				cars = carService.findAllCars();
+			}else{
+				cars = carService.findAdminCarsByAdminName(currentUser.getLoginname());
+			}
+
 		}else{
 			User currentUser = AccountShiroUtil.getCurrentUser();
 			session.setAttribute("userName", currentUser.getUsername());
@@ -294,7 +298,13 @@ public class BackstageController extends BaseController<User> {
 		if (AccountShiroUtil.isAdminUser()){
 			AdminUser currentUser = AccountShiroUtil.getCurrentAdminUser();
 			System.out.println("当前用户：" + JSON.toJSONString(currentUser, true));
-			cars = carService.findAdminCarsByAdminName(currentUser.getLoginname());
+
+			if (currentUser.isSuperAdmin()){
+				cars = carService.findAllCars();
+			}else{
+				cars = carService.findAdminCarsByAdminName(currentUser.getLoginname());
+			}
+
 		}else{
 			User currentUser = AccountShiroUtil.getCurrentUser();
 			System.out.println("当前用户：" + JSON.toJSONString(currentUser, true));
@@ -344,7 +354,12 @@ public class BackstageController extends BaseController<User> {
 		if (AccountShiroUtil.isAdminUser()){
 			AdminUser currentUser = AccountShiroUtil.getCurrentAdminUser();
 			System.out.println("当前用户：" + JSON.toJSONString(currentUser, true));
-			cars = carService.findAdminCarsByAdminName(currentUser.getLoginname());
+			if (currentUser.isSuperAdmin()){
+				cars = carService.findAllCars();
+			}else {
+				cars = carService.findAdminCarsByAdminName(currentUser.getLoginname());
+			}
+
 		}else{
 			User currentUser = AccountShiroUtil.getCurrentUser();
 			System.out.println("当前用户：" + JSON.toJSONString(currentUser, true));
@@ -480,7 +495,15 @@ public class BackstageController extends BaseController<User> {
 		if (AccountShiroUtil.isAdminUser()){
 			AdminUser currentUser = AccountShiroUtil.getCurrentAdminUser();
 			System.out.println("当前用户：" + JSON.toJSONString(currentUser, true));
-			pageInfo = carService.findAdminCarsByAdminNameByPage(currentUser.getLoginname(),keyword,page);
+
+			if (currentUser.isSuperAdmin()){
+				pageInfo = carService.findAllCars(keyword,page);
+			}else{
+				pageInfo = carService.findAdminCarsByAdminNameByPage(currentUser.getLoginname(),keyword,page);
+			}
+
+
+
 		}else{
 			User currentUser = AccountShiroUtil.getCurrentUser();
 			System.out.println("当前用户：" + JSON.toJSONString(currentUser, true));
@@ -533,13 +556,24 @@ public class BackstageController extends BaseController<User> {
 	public AjaxRes getmycarsinfo(String page,String keyword) {
 		AjaxRes ar = getAjaxRes();
 		List<Car> cars = null;
+		HashMap<String, Object> rmap = new HashMap<>();
 		PageInfo<Car> pageInfo;
 		// shiro获取用户信息
 
 		if (AccountShiroUtil.isAdminUser()){
 			AdminUser currentUser = AccountShiroUtil.getCurrentAdminUser();
 			System.out.println("当前用户：" + JSON.toJSONString(currentUser, true));
-			pageInfo = carService.findAdminCarsByAdminNameByPage(currentUser.getLoginname(),keyword,page);
+
+
+			if (currentUser.isSuperAdmin()){
+					///  超级管理员 可以看到全部车辆
+				pageInfo = carService.findAllCars(keyword,page);
+			}else{
+				pageInfo = carService.findAdminCarsByAdminNameByPage(currentUser.getLoginname(),keyword,page);
+				rmap.put("isDelete", "N"); /// 二级管理员不能删除车辆
+			}
+
+
 		}else{
 			User currentUser = AccountShiroUtil.getCurrentUser();
 			System.out.println("当前用户：" + JSON.toJSONString(currentUser, true));
@@ -572,11 +606,11 @@ public class BackstageController extends BaseController<User> {
 			}
 		}
 
-		HashMap<String, Object> map = new HashMap<>();
-		map.put("list", rList); /// 名字
-		map.put("pageInfo", pageInfo); /// 标识
 
-		ar.setSucceed(map);
+		rmap.put("list", rList); /// 数据
+		rmap.put("pageInfo", pageInfo); /// 分页
+
+		ar.setSucceed(rmap);
 
 		return ar;
 	}
@@ -717,13 +751,58 @@ public class BackstageController extends BaseController<User> {
 	@ResponseBody
 	public Map<String, Object> deleteCar(String sn) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		User currentUser = AccountShiroUtil.getCurrentUser();
-		/// 查询出当前车辆的位置
-		Boolean ret = carService.deleteCar(currentUser.getUsername(), sn);
-		map.put("result", ret ? "success" : "failure");
+
+		if (AccountShiroUtil.isAdminUser()){
+			AdminUser currentUser = AccountShiroUtil.getCurrentAdminUser();
+
+			if (currentUser.isSuperAdmin()){
+				Boolean ret = carService.deleteCarBySn(sn);
+				map.put("result", ret ? "success" : "failure");
+			}else{
+				map.put("result", "没有权限");
+			}
+
+		}else{
+			User currentUser = AccountShiroUtil.getCurrentUser();
+			/// 查询出当前车辆的位置
+			Boolean ret = carService.deleteCar(currentUser.getUsername(), sn);
+			map.put("result", ret ? "success" : "failure");
+		}
+
+
 		System.out.println(map);
 		return map;
 	}
+
+	/**
+	 * deleteAdmin
+	 */
+	@RequestMapping(value = "deleteAdmin", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> deleteAdmin(String loginname) {
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		if (AccountShiroUtil.isAdminUser()){
+			AdminUser currentUser = AccountShiroUtil.getCurrentAdminUser();
+
+			if (currentUser.isSuperAdmin()){
+				map.put("result",adminUserService.deleteAdmin(loginname)?"success":"failure");
+			}else{
+				map.put("result","failure");
+				map.put("msg","没有权限");
+			}
+
+		}else{
+
+			map.put("result","failure");
+			map.put("msg","没有权限");
+		}
+
+
+		System.out.println(map);
+		return map;
+	}
+
 
 	/**
 	 * 获取我的车辆详细信息
@@ -740,7 +819,14 @@ public class BackstageController extends BaseController<User> {
 		if (AccountShiroUtil.isAdminUser()){
 			AdminUser currentUser = AccountShiroUtil.getCurrentAdminUser();
 			System.out.println("当前用户：" + JSON.toJSONString(currentUser, true));
-			cars = carService.findAdminCarsByAdminName(currentUser.getLoginname());
+
+			if (currentUser.isSuperAdmin()){
+				cars = carService.findAllCars();
+			}else{
+				cars = carService.findAdminCarsByAdminName(currentUser.getLoginname());
+			}
+
+
 		}else{
 			User currentUser = AccountShiroUtil.getCurrentUser();
 			System.out.println("当前用户：" + JSON.toJSONString(currentUser, true));

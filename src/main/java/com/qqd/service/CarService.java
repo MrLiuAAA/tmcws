@@ -64,9 +64,15 @@ public interface CarService {
 
 	public Boolean deleteCar(String userName, String sn);
 
+	public Boolean deleteCarBySn(String sn);
+
 	public Boolean addCar(String username, String sn, String name);
 
     public List<Car> findAdminCarsByAdminName(String loginname);
+
+	public List<Car> findAllCars();
+
+	public PageInfo<Car> findAllCars(String keyword,String pageNum);
 
 	public PageInfo<Car> findAdminCarsByAdminNameByPage(String loginname,String keyword,String page);
 

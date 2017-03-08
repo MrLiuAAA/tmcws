@@ -34,6 +34,10 @@
 		delete from g_car where username = #{username} and sn = #{sn}
 	</delete>
 
+	<delete id="deleteCarBySn">
+		delete from g_car where sn = #{sn}
+	</delete>
+
 
 	<insert id="saveCar" parameterType="com.qqd.model.Car"  useGeneratedKeys="true" keyColumn="id" keyProperty="id">
 
@@ -56,6 +60,18 @@
 		</if>
 	</select>
 
+	<select id="findAllCars" resultType="com.qqd.model.Car">
+
+
+		select b.* from g_car b where 1=1
+		<if test="keyword!= null and keyword!= ''">
+			AND (
+			b.name LIKE CONCAT('%',#{keyword},'%')
+			OR b.sn LIKE CONCAT('%',#{keyword},'%')
+			)
+		</if>
+	</select>
+
 
 
 	<insert id="addCarToAdmin">
@@ -68,6 +84,10 @@
 
 	</insert>
 
+	<delete id="deleteAdminCarsByAdminName">
+
+		DELETE FROM admincar WHERE adminid = (SELECT t.id from `adminuser` t where t.loginname = #{loginname})
+	</delete>
 
 
 	<select id="findAdminAllCarsByAdminName" resultType="com.qqd.model.Car">

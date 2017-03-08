@@ -19,6 +19,7 @@ function getData(page) {
 
 			layer.close(index);
 
+			var isDelete = data.obj.isDelete;
 			var result=data.obj.list;
 			var pageInfo=data.obj.pageInfo;
 			// / 先清空
@@ -44,8 +45,8 @@ function getData(page) {
 					'<td width="30%">'+
 						'<div class="open">'+
 						'<span class="'+(item.powerflag=='Y'?'battery':'battery-no')+'" onclick="power(\''+item.sn+'\',\''+item.powerflag+'\')"></span>'+
-						'<span class="restar" onclick="restart('+item.sn+')"></span>'+
-						'<span class="delete" onclick="deleteCar('+item.sn+')"></span>'+
+						'<span class="restar" onclick="restart(\''+item.sn+'\')"></span>'+
+					((isDelete=='N')?'':'<span class="delete" onclick="deleteCar(\''+item.sn+'\')"></span>')+
 						'</div>'+
 					'</td>'+
 					'</tr>'

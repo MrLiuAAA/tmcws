@@ -150,7 +150,10 @@ table.news tr td>.open{padding-top: 0;}
 .manage input.editor{width: 200px;border: 1px solid #D8D8D9;line-height: 30px;border-radius: 3px;-webkit-border-radius: 3px;-webkit-border-radius: 3px;padding: 0 5px}
 .manage .carInfo{display: inline-block;}
 .table tr td>.manage{display: block;text-align: right;vertical-align: middle;}
-.table tr td>.manage span{cursor: pointer;width:25px;height: 25px;display: inline-block;vertical-align: middle;text-align: right;margin-left: 5px;background: url("../images/guanlian.png") no-repeat}
+.table tr td>.manage span{cursor: pointer;width:25px;height: 25px;display: inline-block;vertical-align: middle;text-align: right;margin-left: 5px;}
+.table tr td>.manage span.delete{background: url("../images/delete.png") no-repeat;}
+.table tr td>.manage span.carInfo{background: url("../images/guanlian.png") no-repeat}
+
 /*管理员-设防*/
 .fortifyL .fortifyName{font-size: 14px}
 .fortifyEdite .bianji{padding-top:10px;font-size: 14px;color: #333333;display: inline-block;cursor: pointer}

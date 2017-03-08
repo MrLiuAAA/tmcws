@@ -14,5 +14,7 @@ public interface AdminUserService {
 
     public PageInfo<AdminUser> findAdmin(String page);
 
+    public Boolean deleteAdmin(String loginname);
+
     public AdminUser save(AdminUser user);
 }

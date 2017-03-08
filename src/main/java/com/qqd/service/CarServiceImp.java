@@ -225,6 +225,11 @@ public class CarServiceImp implements CarService {
 	}
 
 
+	@Override
+	public Boolean deleteCarBySn(String sn){
+		int r = carDao.deleteCarBySn(sn);
+		return r > 0;
+	}
 
 	@Override
 	public Boolean addCar(String username, String sn, String name) {
@@ -248,6 +253,20 @@ public class CarServiceImp implements CarService {
 	public List<Car> findAdminCarsByAdminName(String loginname) {
 
 		return carDao.findAdminCarsByAdminName(loginname,"");
+	}
+
+	@Override
+	public List<Car> findAllCars() {
+		return carDao.findAllCars("");
+	}
+
+
+	@Override
+	public PageInfo<Car> findAllCars(String keyword,String pageNum) {
+
+		com.github.pagehelper.Page<Car> pageHelper =  PageHelper.startPage(new Integer(pageNum), Const.PAGE_SIZE);
+
+		return new PageInfo<Car>(carDao.findAllCars(keyword));
 	}
 
 

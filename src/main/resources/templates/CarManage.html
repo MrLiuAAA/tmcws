@@ -15,9 +15,14 @@
 
     <div class="content-wrapper">
         <div class="manage clearfix">
+
             <div class="manageBox manageL">
-                <div class="addOpen" id="addcar_div"></div>
+                <!--/*@thymesVar id="role" type="java.lang.String"*/-->
+                <th:themleaf th:if="${session.role=='user'}" th:remove="tag">
+                    <div class="addOpen" id="addcar_div"></div>
+                </th:themleaf>
             </div>
+
             <div class="manageBox manageR">
                 <div class="searchBox">
                     <div class="search">
