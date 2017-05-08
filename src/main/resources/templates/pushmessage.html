@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <title>添加推送消息</title>
+    <thymeleaf th:include="common :: css" th:remove="tag"/>
+    <thymeleaf th:include="common :: js" th:remove="tag"/>
+
+    <link rel="stylesheet" th:href="@{/js/layui/css/layui.css}"/>
+    <script type="text/javascript" th:src="@{/js/layui/layui.js}"></script>
+
+</head>
+<body>
+<div class="wrapper">
+
+    <thymeleaf th:include="main_sidebar :: main" th:remove="tag"/>
+
+    <div class="content-wrapper">
+        <div class="manage clearfix">
+            <div class="manageBox manageL">
+                <a href="javascript:history.go(-1)"><div class="backOpen"></div></a>
+                <div class="saveOpen" style="cursor: pointer" id="addMessage_div"></div>
+            </div>
+            <div class="manageBox manageR">
+               <div class="headline">
+                   <label>推送标题：</label>
+                   <input type="text" palplaceholder="请输入标题" id="title"/>
+               </div>
+               <div class="movementContent">
+                   <h3>正文内容</h3>
+
+                   <textarea id="layEditContent" style="display: none;"></textarea>
+
+               </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    $("#news_li").addClass("active");
+
+
+    var index;
+
+    layui.use('layedit', function(){
+        var $ = layui.jquery;
+        var layedit = layui.layedit;
+//        index =    layedit.build('layEditContent'); //建立编辑器
+        //自定义工具栏  隐藏上传图片
+        index = layedit.build('layEditContent', {
+            hideTool: ['image']
+            ,height: 400
+        })
+    });
+
+
+    $("#addMessage_div").on('click',function(){
+        var ii = layer.load();
+
+        var title =$.trim($("#title").val());
+
+        var layedit = layui.layedit;
+        var content =$.trim(layedit.getContent(index));
+
+        if(title==''){
+            layer.msg('标题不能为空', {
+                time: 1000 //1s后自动关闭
+
+            });
+            layer.close(ii);
+            return;
+        }else  if(content==''){
+            layer.msg('内容不能为空', {
+                time: 1000 //1s后自动关闭
+
+            });
+            layer.close(ii);
+            return;
+        }
+
+        $.ajax({
+            type : 'POST',
+            url : '/backstage/savePushNews',
+            data : {
+                'title' :title,
+                'content' :content
+
+            },
+            dataType : 'json',
+            success : function(data, textStatus) {
+                layer.close(ii);
+
+                var result = data.result;
+                if ("success" != result) { //
+                    layer.msg(data.msg, {
+                        time: 2000 //2s后自动关闭
+
+                    });
+                } else {
+                    window.location = '/backstage/push';
+                }
+            },
+            error: function(e) {
+                layer.close(ii);
+                layer.msg("推送失败", {
+                    time: 2000 //2s后自动关闭
+
+                });
+            }
+
+        });
+
+    })
+</script>
+</body>
+</html>
