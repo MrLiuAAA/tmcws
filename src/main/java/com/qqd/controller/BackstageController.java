@@ -26,6 +26,7 @@ import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
 import com.qqd.AjaxRes;
 import com.qqd.model.*;
+import com.qqd.push.App;
 import com.qqd.service.*;
 import com.qqd.utils.ExcelUtils;
 import com.qqd.utils.MD5Util;
@@ -43,7 +44,10 @@ import sun.misc.BASE64Decoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.*;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.*;
 
 /**
@@ -75,6 +79,9 @@ public class BackstageController extends BaseController<User> {
 
 	@Autowired
 	public NoticeService noticeService;
+
+	@Autowired
+	public PushNewsService pushNewsService;
 
 	/**
 	 * 访问系统首页
@@ -181,6 +188,17 @@ public class BackstageController extends BaseController<User> {
 		return "adminmanage";
 	}
 
+	@RequestMapping("push")
+	public String pushMessage(Model model) {
+		return "messagemanager";
+	}
+	@RequestMapping("addpush")
+	public String addPushMessage(Model model) {
+		return "pushmessage";
+	}
+
+
+
 
 	@RequestMapping(value = "getmembers", method = RequestMethod.POST)
 	@ResponseBody
@@ -267,6 +285,45 @@ public class BackstageController extends BaseController<User> {
 
 		return map;
 	}
+
+	@RequestMapping(value = "addUser", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> addUser(User user) {
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		System.out.println("----------:\n"+JSON.toJSONString(user,true));
+
+		/**
+		 *  检查 用户名和电话是否已经存在
+		 */
+		User u1 = userService.findUserByName(user.getUsername());
+		if (u1!=null&&u1.getUserid()!=null){
+			map.put("result","failure");
+			map.put("msg","用户名已经存在！");
+
+			System.out.println(map);
+			return map;
+		}
+		User u2 = userService.findUserByTelephone(user.getTelephone());
+		if (u2!=null&&u2.getUserid()!=null){
+			map.put("result","failure");
+			map.put("msg","电话号码已经存在！");
+
+			System.out.println(map);
+			return map;
+		}
+
+
+		user.setPassword(MD5Util.md5Encode(user.getPassword()));;
+
+		User u = userService.addUser(user);
+
+		map.put("result", u.getUserid()!=null ? "success" : "failure");
+		System.out.println(map);
+
+		return map;
+	}
+
 
 
 
@@ -1107,6 +1164,105 @@ public class BackstageController extends BaseController<User> {
 		}
 
 
+		return map;
+	}
+
+
+	@RequestMapping(value = "savePushNews", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> savePushNews(PushNews news) {
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			news = pushNewsService.save(news);
+			//
+			if(news!=null&&news.getId()!=null){
+				map.put("result", "success" );
+			}else{
+				map.put("result", "failure");
+				map.put("msg", "保存失败");
+			}
+
+			App app = new App();
+
+			List<User> list = userService.findUsers();
+
+
+			String web_url = "http://user.tiamu.cn/news?id="+news.getId();
+
+			for (User u:
+				 list) {
+				if (u.getPushtoken()!=null
+						&&u.getPushtoken().length()>0){
+					if ("ios".equalsIgnoreCase(u.getOs()))
+					{
+						System.out.println("推送苹果token："+u.getPushtoken());
+						app.sendIOSUnicast(u.getPushtoken(), 0, news.getTitle(),web_url,"default");
+					}else {
+						System.out.println("推送Android 的 token："+u.getPushtoken());
+						app.sendAndroidUnicast(u.getPushtoken(), news.getTitle(),web_url,"default");
+					}
+				}
+
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+			map.put("result", "failure");
+			map.put("msg", "保存失败");
+		}
+
+
+		return map;
+	}
+
+
+
+
+
+	@RequestMapping("getPushNews")
+	@ResponseBody
+	public AjaxRes getPushNews(String page,String keyword) {
+		AjaxRes ar = getAjaxRes();
+		List<PushNews> news = null;
+		HashMap<String, Object> rmap = new HashMap<>();
+		PageInfo<PushNews> pageInfo;
+		// shiro获取用户信息
+
+
+			User currentUser = AccountShiroUtil.getCurrentUser();
+			System.out.println("当前用户：" + JSON.toJSONString(currentUser, true));
+			pageInfo = pushNewsService.findPushNewsByPage(page);
+
+		news = pageInfo.getList();
+
+		System.out.println("====\n\n\npageInfo信息：" + JSON.toJSONString(pageInfo, true));
+
+		List<Map<String, String>> rList = new ArrayList<>();
+
+
+
+
+
+		rmap.put("list", news); /// 数据
+		rmap.put("pageInfo", pageInfo); /// 分页
+
+		ar.setSucceed(rmap);
+
+		return ar;
+	}
+
+
+	/**
+	 * deleteCar
+	 */
+	@RequestMapping(value = "deletePushNews", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> deletePushNews(String id) {
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		Boolean ret = pushNewsService.deletePushNews(id);
+		map.put("result", ret ? "success" : "failure");
+		System.out.println(map);
 		return map;
 	}
 

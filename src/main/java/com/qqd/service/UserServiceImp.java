@@ -37,6 +37,8 @@ import com.qqd.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
 * @author 作者 E-mail:
 * @version 创建时间：2016年11月1日 上午8:45:53
@@ -67,6 +69,17 @@ public class UserServiceImp implements UserService {
 		}
 		return a;
 	}
+	@Override
+	public User findUserByTelephone(String telephone){
+		User a = null;
+		try {
+			System.out.println("===============" + telephone);
+			a = userDao.findUserByTelephone(telephone);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return a;
+	}
 
 	@Override
 	public PageInfo<User> findAllUsers(String page){
@@ -76,10 +89,23 @@ public class UserServiceImp implements UserService {
 		return new PageInfo<User>(userDao.findAllUsers());
 	}
 
+    @Override
+    public List<User> findUsers() {
+        return userDao.findAllUsers();
+    }
+
+    @Override
 	public Boolean deleteUser(String userid){
 		return userDao.delete(userid)>0;
 	}
 
+
+	@Override
+	public User addUser(User user){
+		userDao.save(user);
+
+		return user;
+	}
 
 	@Override
 	public boolean updateUserInfo(User user) {

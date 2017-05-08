@@ -32,6 +32,8 @@ package com.qqd.service;
 import com.github.pagehelper.PageInfo;
 import com.qqd.model.User;
 
+import java.util.List;
+
 /**
 * @author 作者 E-mail:
 * @version 创建时间：2016年11月1日 上午8:41:45
@@ -48,7 +50,7 @@ public interface UserService{
 
 	/**
      * 根据登录帐号查找
-     * @return
+     *
      */
     public User findUserByName(String loginName);
 
@@ -58,5 +60,10 @@ public interface UserService{
 
     public PageInfo<User> findAllUsers(String page);
 
+    public List<User> findUsers();
+
     public Boolean deleteUser(String userid);
+    public User addUser(User user);
+
+    public User findUserByTelephone(String telephone);
 }

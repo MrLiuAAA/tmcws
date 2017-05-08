@@ -55,4 +55,8 @@ public interface UserDao  {
     public List<User> findAllUsers();
 
     public Integer delete(@Param("userid") String userid);
+
+    public void save(User user);
+
+    public User findUserByTelephone(@Param("telephone")  String telephone);
 }

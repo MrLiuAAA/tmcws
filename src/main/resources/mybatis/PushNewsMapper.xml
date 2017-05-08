@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qqd.dao.PushNewsDao">
+
+
+	<resultMap id="pushNews" type="com.qqd.model.PushNews" autoMapping="true">
+
+
+
+
+	</resultMap>
+
+	<select id="findPushNews" resultMap="pushNews">
+		SELECT *
+
+		FROM `g_push_news` a
+		ORDER BY  a.id DESC
+	</select>
+	<select id="findPushNewsById" resultMap="pushNews">
+
+		SELECT *
+
+		FROM `g_push_news` a
+
+		where a.id = #{id}
+
+
+
+	</select>
+
+
+	<delete id="deleteById">
+
+		DELETE  FROM `g_push_news`  WHERE  id = #{id}
+	</delete>
+
+	<insert id="save" keyColumn="id" keyProperty="id" parameterType="com.qqd.model.PushNews"
+			useGeneratedKeys="true">
+
+		INSERT INTO `g_push_news` (`title`,`content`)
+		VALUES (#{title},#{content})
+
+	</insert>
+
+</mapper>

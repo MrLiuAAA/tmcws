@@ -24,6 +24,12 @@
 		FROM `user` t
 		WHERE t.username = #{username}
 	</select>
+
+	<select id="findUserByTelephone" resultMap="userMap">
+		SELECT t.*
+		FROM `user` t
+		WHERE t.telephone = #{telephone}
+	</select>
 	
 	
 	<update id="updateUserInfo" parameterType="com.qqd.model.User">
@@ -56,5 +62,14 @@
 	<delete id="delete">
 		DELETE FROM `user` WHERE userid=#{userid}
 	</delete>
+
+
+	<insert id="save" keyColumn="userid" keyProperty="userid" parameterType="com.qqd.model.User"
+			useGeneratedKeys="true">
+
+		INSERT INTO `user` (username,`realname`,`nickname`,`telephone`,password)
+		VALUES (#{username},#{realname},#{nickname},#{telephone},#{password})
+
+	</insert>
 
 </mapper>

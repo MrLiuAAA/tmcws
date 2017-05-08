@@ -21,7 +21,9 @@
 package com.qqd.controller;
 
 import com.qqd.Const;
+import com.qqd.model.PushNews;
 import com.qqd.model.User;
+import com.qqd.service.PushNewsService;
 import com.qqd.service.UserService;
 import com.qqd.shiro.TMCWSToken;
 import com.qqd.utils.PageData;
@@ -39,6 +41,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,7 +58,11 @@ public class LoginController extends BaseController<User>{
 
 	@Autowired
 	UserService userService;
-	
+
+	@Autowired
+	public PushNewsService pushNewsService;
+
+
 	@RequestMapping("/")
 	public String index(){
 		
@@ -239,5 +246,21 @@ public class LoginController extends BaseController<User>{
 		session.removeAttribute(Const.SESSION_MENULIST);
         return "redirect:loginIndex";
     }
+
+
+
+	@RequestMapping("/news")
+	public String news(HttpSession session,String id){
+
+		PushNews news = pushNewsService.findPushNewsById(id);
+
+		session.setAttribute("title", news.getTitle());
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String dateString = formatter.format(news.getCreateTime());
+		session.setAttribute("createTime", dateString);
+		session.setAttribute("content", news.getContent());
+		return "pushnews";
+	}
+
 	
 }
