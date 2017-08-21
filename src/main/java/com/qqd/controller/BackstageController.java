@@ -993,7 +993,8 @@ public class BackstageController extends BaseController<User> {
 			BASE64Decoder decoder = new BASE64Decoder();
 			String uuid = UUID.randomUUID().toString().replace("-", "").toUpperCase();
 
-			String basePath = "C:\\web";
+//			String basePath = "C:\\web";
+			String basePath = "/usr/local/gps_pc_server";
 			String urlPath = "/avatarImages/" + uuid + ".jpg";
 			String filePath = basePath+urlPath;
 
