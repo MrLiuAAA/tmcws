@@ -24,7 +24,7 @@
             time:2,
             x:0,
             y:0
-        }
+        };
         var options = $.extend(defaults, options);
         if (!options.msg||isNaN(options.side)) {
         throw new Error('params error');
@@ -85,7 +85,7 @@
                 tips.fadeOut('fast',function(){
                     tips.remove();
                 })
-            })
+            });
             if(options.time){
                 closeTime=setTimeout(function(){
                     tips.click();

@@ -40,9 +40,30 @@ $(function() {
 				setSelect:function(ids,keys,type,dfstr){
 					$.ajax({type:'POST',url:jypath+'/backstage/dataDict/getDictSelect',data:{ids:ids,keys:keys},dataType:'json',success:function(data,textStatus){
 			        	if(data.res==1){var map=data.obj;var idss= ids.split(",");var opts="",name="";
-			        		if(type==1){for(var i=0;i<idss.length;i++){name=map[idss[i]].name;opts="<option value=''>请选择</option>";$.each(map[idss[i]].items,function(n,v) {opts+="<option value='"+v.value+"'>"+v.name+"</option>";});$("#"+idss[i]+" select").append(opts);$("#"+idss[i]).trigger("liszt:updated");};}
-			        		else if(type==2){var dfstrs= dfstr.split(",");for(var i=0;i<idss.length;i++){name=map[idss[i]].name;$("#"+idss[i]+" label").html(name); opts="<option value=''>"+dfstrs+"</option>";$.each(map[idss[i]].items,function(n,v) {opts+="<option value='"+v.value+"'>"+v.name+"</option>";	});$("#"+idss[i]+" select").append(opts);};}
-			        		else{for(var i=0;i<idss.length;i++){var name=map[idss[i]].name;$("#"+idss[i]+" label").html(name);opts="";$.each(map[idss[i]].items,function(n,v) {opts+="<option value='"+v.value+"'>"+v.name+"</option>";});$("#"+idss[i]+" select").append(opts);}}}   
+							if (type == 1) {
+								for (var i = 0; i < idss.length; i++) {
+									name = map[idss[i]].name;
+									opts = "<option value=''>请选择</option>";
+									$.each(map[idss[i]].items, function (n, v) {
+										opts += "<option value='" + v.value + "'>" + v.name + "</option>";
+									});
+									$("#" + idss[i] + " select").append(opts);
+									$("#" + idss[i]).trigger("liszt:updated");
+								}
+							}
+							else if (type == 2) {
+								var dfstrs = dfstr.split(",");
+								for (var i = 0; i < idss.length; i++) {
+									name = map[idss[i]].name;
+									$("#" + idss[i] + " label").html(name);
+									opts = "<option value=''>" + dfstrs + "</option>";
+									$.each(map[idss[i]].items, function (n, v) {
+										opts += "<option value='" + v.value + "'>" + v.name + "</option>";
+									});
+									$("#" + idss[i] + " select").append(opts);
+								}
+							}
+							else{for(var i=0;i<idss.length;i++){var name=map[idss[i]].name;$("#"+idss[i]+" label").html(name);opts="";$.each(map[idss[i]].items,function(n,v) {opts+="<option value='"+v.value+"'>"+v.name+"</option>";});$("#"+idss[i]+" select").append(opts);}}}
 			        	//适应手机
 			        	if("ontouchend" in document) {$(".chosen-select").removeClass("chosen-select");}
 			        	//下拉框样式
@@ -82,7 +103,7 @@ $(function() {
 			  		else{html+="<li class='next disabled'><a href='##'>下页</a></li>";html+="<li class='next disabled'><a href='##'>尾页</i></a></li>";}
 			  		html+="<li class='disabled'><a href='##'>共"+leng+"页<font color='red'>"+totalCount+"</font>条</a></li>";
 			  		html+="<li class='next'><input onkeyup='this.value=this.value.replace(/\D/g,&apos;&apos;)' type='number' min='1' max='"+leng+"'  placeholder='页码' class='choseJPage' ></li>";
-			  		html+="<li ><a class='btn btn-mini btn-success' onclick='JY.Page.jumpCustom(&apos;"+formId+"&apos;,&apos;"+pageId+"&apos;,"+leng+",&apos;"+fun+"&apos;);' href='##'>跳转</a></li>";
+			  		html+="<li ><a class='btn btn-mini btn-success' onclick='JY.Page.jumpCustom(&apos;"+formId+"&apos;,&apos;"+pageId+"&apos;,"+leng+",&apos;"+fun+"&apos;)' href='##'>跳转</a></li>";
 			  		html+="<li class='disabled'><select onchange='JY.Page.setSize(&apos;"+formId+"&apos;,this.value,&apos;"+fun+"&apos;)' style='width:55px;float:left;' title='显示条数'>"+"<option value='10'  "+((pagesize==10)?"selected='selected'":"")+" >10</option>" +"<option value='15' "+((pagesize==15)?"selected='selected'":"")+" >15</option>" +"<option value='20' "+((pagesize==20)?"selected='selected'":"")+" >20</option>"+"</li>";
 			  		pageul.append(html);
 			  	}	
@@ -285,13 +306,13 @@ $(function() {
 										JY.Model.loadingClose();
 								}
 							},
-							error:function(){return;},
+							error:function(){},
 							beforeSend:function(){},
 							complete:function(){}
 							});
 				},
 						
-		    req:function(form,url,param,fn){var params = form || param || {};if (typeof form == 'string'){params = $.extend(param || {},JY.Object.serialize($("#" + form)),{menu:JY.Url.getParam("menu")});}$.ajax({type:'POST',url:url,data:params,dataType:'json',success:function(data, textStatus) {if (typeof(fn)=='function'){fn.call(this, data);}},error:function(){return;},beforeSend:function(){},complete:function(){}});}
+		    req:function(form,url,param,fn){var params = form || param || {};if (typeof form == 'string'){params = $.extend(param || {},JY.Object.serialize($("#" + form)),{menu:JY.Url.getParam("menu")});}$.ajax({type:'POST',url:url,data:params,dataType:'json',success:function(data, textStatus) {if (typeof(fn)=='function'){fn.call(this, data);}},error:function(){},beforeSend:function(){},complete:function(){}});}
 			},
 		File:{
 			//obj:对象传this, aFmats:允许格式,用"|"分隔
