@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8" />
+	<title>天目-车辆设防管理</title>
+	<thymeleaf th:include="common :: css" th:remove="tag"/>
+	<thymeleaf th:include="common :: js" th:remove="tag"/>
+
+	<script type="text/javascript" th:src="@{/js/cropbox.js}" ></script>
+	<script type="text/javascript" th:src="@{/js/ajaxfileupload.js}" ></script>
+	<script type="text/javascript" th:src="@{/js/adminperson.js}" ></script>
+
+
+</head>
+	<body>
+		<div class="wrapper">
+
+			<thymeleaf th:include="main_sidebar :: main" th:remove="tag"/>
+
+			<div class="content-wrapper">
+				<div class="manage clearfix">
+					<!--<div class="manageBox manageL">-->
+						<!--<div class="personOpen" id="edit_person"></div>-->
+					<!--</div>-->
+					<!---->
+					<div class="manageBox manageR">
+						<!--/*@thymesVar id="user" type="com.qqd.model.AdminUser"*/-->
+						<table class="table table-hover person">
+							<tbody>
+								<tr>
+									<td width="50%">
+										<h3 class="carName">名称</h3>
+									</td>
+									<td width="50%">
+										<p th:text="${user.name}"></p>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h3 class="carName">登录账号</h3>
+									</td>
+									<td>
+										<p th:text="${user.loginname}"></p>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h3 class="carName">上传头像</h3>
+									</td>
+									<td>
+										<div class="userImg"><img id="user" class="user" th:src="${user.avatar}" src="../images/huge.jpg"/></div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<!--<div class="submit"><button>提交</button></div>-->
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--头像上传-->
+		<div class="avatar">
+			<div class="container-info">
+				<div class="imageBox">
+					<div class="thumbBox"></div>
+					<div class="spinner" style="display: none">Loading...</div>
+				</div>
+				<div class="action clearfix">
+					<p>提示：尽支持JPG、PNG图片文件，且文件大小小于3M</p>
+					<input type="file" id="file" name="avatar"/>
+					<input type="button" class="xianshi" value="点击选择图片" onclick="file.click()"/>
+					<button id="btnCrop" style="float: right">确定</button>
+					<button id="btnZoomIn" style="float: right">＋</button>
+					<button id="btnZoomOut" style="float: right">－
+					</button>
+				</div>
+			</div>
+		</div>
+
+
+
+	</body>
+
+</html>
