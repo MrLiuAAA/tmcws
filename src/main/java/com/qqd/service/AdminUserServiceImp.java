@@ -61,4 +61,11 @@ public class AdminUserServiceImp implements AdminUserService {
 
         return adminUserDao.deleteAdmin(loginname)>0;
     }
+
+
+    @Override
+    public boolean updateAdminAvatar(AdminUser user) {
+        Integer a = adminUserDao.updateAdminAvatar(user);
+        return a>0;
+    }
 }

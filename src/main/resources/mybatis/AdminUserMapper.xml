@@ -40,4 +40,13 @@
 
 	</insert>
 
+	<update id="updateAdminAvatar" parameterType="com.qqd.model.AdminUser">
+
+		UPDATE `adminuser`
+
+		SET avatar = #{avatar}
+
+		WHERE loginname = #{loginname}
+
+	</update>
 </mapper>

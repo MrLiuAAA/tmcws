@@ -233,7 +233,7 @@ public class LoginController extends BaseController<User>{
 
 
 	  /**
-     * 帐号注销
+     * 普通用户帐号注销
      * @return
      */
     @RequestMapping("/system_logout")
@@ -246,6 +246,21 @@ public class LoginController extends BaseController<User>{
 		session.removeAttribute(Const.SESSION_MENULIST);
         return "redirect:loginIndex";
     }
+
+	/**
+	 * 管理员用户帐号注销
+	 * @return
+	 */
+	@RequestMapping("/system_admin_logout")
+	public String adminLogout(HttpServletRequest request,HttpSession session) {
+		Subject currentUser = SecurityUtils.getSubject();
+		currentUser.logout();
+		session = request.getSession(true);
+		session.removeAttribute(Const.SESSION_USER);
+		session.removeAttribute(Const.SESSION_ADMIN_USER);
+		session.removeAttribute(Const.SESSION_MENULIST);
+		return "redirect:adminLoginIndex";
+	}
 
 
 

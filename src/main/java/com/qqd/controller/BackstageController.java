@@ -160,6 +160,31 @@ public class BackstageController extends BaseController<User> {
 		return "position";
 	}
 
+	/**
+	 * 定位车辆页面
+	 *
+	 */
+	@RequestMapping("openmap")
+	public String openmap(Model model,String sn) {
+
+		model.addAttribute("sn", sn);
+		return "openmap";
+	}
+
+	@RequestMapping(value = "getcarlocation", method = RequestMethod.POST)
+	@ResponseBody
+	public AjaxRes getcarlocation(String sn) {
+
+		System.out.println("-----sn-----:\n"+sn);
+		AjaxRes ar = getAjaxRes();
+		Car car = carService.findCarBySn(sn);
+
+		ar.setSucceed(car);
+		return ar;
+	}
+
+
+
 
 	/**
 	 * 账户管理
@@ -916,6 +941,15 @@ public class BackstageController extends BaseController<User> {
 		model.addAttribute("user",currentUser);
 		return "person";
 	}
+	@RequestMapping("adminperson")
+	public String adminpersonInfo(Model model) {
+
+		AdminUser currentUser = AccountShiroUtil.getCurrentAdminUser();
+		model.addAttribute("user",currentUser);
+		return "adminperson";
+	}
+
+
 
 
 	// 添加
@@ -986,7 +1020,7 @@ public class BackstageController extends BaseController<User> {
 	// 添加
 	@RequestMapping(method = RequestMethod.POST, value = "uploadImg")
 	@ResponseBody
-	public AjaxRes uploadImg(@RequestParam(value="imgStr",required=true) String imgStr) {
+	public AjaxRes uploadImg(HttpSession session,@RequestParam(value="imgStr",required=true) String imgStr) {
 		AjaxRes ar = new AjaxRes();
 
 		if(!"#nochange*".equals(imgStr)){
@@ -994,6 +1028,7 @@ public class BackstageController extends BaseController<User> {
 			String uuid = UUID.randomUUID().toString().replace("-", "").toUpperCase();
 
 //			String basePath = "C:\\web";
+//			String basePath = "/Users/liujianyang/Desktop/";
 			String basePath = "/usr/local/gps_pc_server";
 			String urlPath = "/avatarImages/" + uuid + ".jpg";
 			String filePath = basePath+urlPath;
@@ -1023,6 +1058,16 @@ public class BackstageController extends BaseController<User> {
 					AdminUser currentUser = AccountShiroUtil.getCurrentAdminUser();
 					System.out.println("当前用户：" + JSON.toJSONString(currentUser, true));
 
+					AdminUser user = new AdminUser();
+					user.setId(currentUser.getId());
+					user.setLoginname(currentUser.getLoginname());
+					user.setAvatar(urlPath);
+					adminUserService.updateAdminAvatar(user);
+
+					AdminUser realCurrentUser = AccountShiroUtil.getRealCurrentAdminUser();
+					realCurrentUser.setAvatar(user.getAvatar());
+
+					session.setAttribute("avatar",currentUser.getAvatar());
 				}else{
 					User currentUser = AccountShiroUtil.getCurrentUser();
 					System.out.println("当前用户：" + JSON.toJSONString(currentUser, true));
@@ -1034,7 +1079,10 @@ public class BackstageController extends BaseController<User> {
 
 					User realCurrentUser = AccountShiroUtil.getRealCurrentUser();
 					realCurrentUser.setMypic(user.getMypic());
+
+					session.setAttribute("avatar",currentUser.getMypic());
 				}
+
 
 
 
@@ -1051,7 +1099,6 @@ public class BackstageController extends BaseController<User> {
 		return ar;
 
 	}
-
 
 
 	@RequestMapping("news")

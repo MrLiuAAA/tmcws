@@ -4,7 +4,7 @@
 
 <head>
 		<meta charset="utf-8" />
-		<title>天目-车辆管理</title>
+		<title>查看车辆位置</title>
 	<thymeleaf th:include="common :: css" th:remove="tag"/>
 
 	<script type="text/javascript" th:src="@{/js/jquery-2.1.1.min.js}"></script>
@@ -15,20 +15,25 @@
 
 </head>
 	<body>
+		<input type="hidden" th:value="${sn}" th:id="car_sn" />
 		<div class="wrapper">
-
-			<thymeleaf th:include="main_sidebar :: main" th:remove="tag"/>
-
-			<div class="content-wrapper">
+			<div class="content-wrapper" style="margin-left: 0px;">
 				<div class="points" id="container">
 					
 				</div>
 			</div>
 		</div>
-		<script type="text/javascript" th:src="@{/js/index.js}" ></script>
-		<script type="text/javascript">
 
-			$("#position_li").addClass("active");
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$(".content-wrapper").css({'width':$(document).width(),'height':$(document).height()});
+				$(window).resize(function () {
+					var height=$(document).height();
+					var width=$(document.body).width();
+					$(".content-wrapper").css({'width':width,'height':height});
+				})
+			})
+
 
 			var map = new AMap.Map('container', {
 				resizeEnable: true,
@@ -51,22 +56,21 @@
 			function completeEventHandler() {
 				getCarLocation(1);
 			}
+
 			function getCarLocation(isFirst){
 				////   请求后台，获取 车辆的位置
-				$.ajax({type:'POST',url:'/backstage/getLocation',data:{},
+				var sn = $("#car_sn").val();
+				$.ajax({type:'POST',url:'/backstage/getcarlocation',data:{'sn':sn},
 					dataType:'json',success:function(data, textStatus) {
-						var result=data.obj;
+						var car=data.obj;
 						/*<![CDATA[*/
-						map.clearMap();
-						for(var i = 0;i<result.length;i++){
-							var car = result[i];
-
+							map.clearMap();
 							var longitude = car.longitude;
 							var latitude = car.latitude;
 
 							if(longitude==0&&latitude==0){
 								////   坐标异常
-								continue;
+								return;
 							}
 
 							var marker = new AMap.Marker({
@@ -84,7 +88,7 @@
 								content: ""+car.name+"<br/>状态:"+car.status //L:失效车辆  Y:设防状态 N:未设防状态
 							});
 
-						}
+
 						/*]]>*/
 						if(isFirst==1){
 							map.setFitView();
@@ -94,6 +98,7 @@
 					}
 				});
 			}
+
 
 		</script>
 

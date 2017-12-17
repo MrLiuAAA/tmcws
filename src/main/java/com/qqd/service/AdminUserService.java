@@ -17,4 +17,6 @@ public interface AdminUserService {
     public Boolean deleteAdmin(String loginname);
 
     public AdminUser save(AdminUser user);
+
+    public boolean updateAdminAvatar(AdminUser user);
 }

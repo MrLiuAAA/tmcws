@@ -40,6 +40,7 @@
 				</th:themleaf>
 
 				<th:themleaf th:if="${session.role=='superAdmin'}" th:remove="tag">
+					<li id="person_li" class="item"><a href="/backstage/adminperson"><span class="datum"></span>个人资料</a></li>
 					<li id="account_li" class="item"><a href="/backstage/account"><span class="datum"></span>账户管理</a></li>
 					<li id="push_li" class="item"><a href="/backstage/push"><span class="news"></span>推送管理</a></li>
 				</th:themleaf>
@@ -50,8 +51,13 @@
 
 				<li id="aoubt_li" class="item"><a href="/backstage/aboutUs"><span class="about"></span>关于我们</a></li>
 			</ul>
+			<th:themleaf th:if="${session.role=='superAdmin'}" th:remove="tag">
+				<div class="withdraw"><a th:href="@{/system_admin_logout}">退出账号</a></div>
+			</th:themleaf>
+			<th:themleaf th:if="${session.role=='user'}" th:remove="tag">
+				<div class="withdraw"><a th:href="@{/system_logout}">退出账号</a></div>
+			</th:themleaf>
 
-			<div class="withdraw"><a th:href="@{/system_logout}">退出账号</a></div>
 		</div>
 	</div>
 </thymeleaf>

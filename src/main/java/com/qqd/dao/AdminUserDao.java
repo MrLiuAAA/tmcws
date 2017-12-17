@@ -57,4 +57,6 @@ public interface AdminUserDao {
     public void save(AdminUser user);
 
     public Integer deleteAdmin(@Param("loginname")  String loginname);
+
+    public Integer updateAdminAvatar(AdminUser user);
 }

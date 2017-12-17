@@ -7,6 +7,15 @@ $(function() {
 
 	getData(1);
 
+	document.onkeydown = function(e){
+		var ev = document.all?window.event:e;
+		if(ev.keyCode==13) {
+
+			getData(1);
+
+		}
+	}
+
 });
 
 function getData(page) {
@@ -35,7 +44,7 @@ function getData(page) {
 					'</td>'+
 					'<td width="30%">'+
 						'<p>状态：'+item.status+' '+item.power+'</p>'+
-						'<p>位置：维度'+item.latitude+' 经度'+item.longitude+'</p>'+
+						'<p><a onclick="openMap(\''+item.sn+'\')">位置：维度'+item.latitude+' 经度'+item.longitude+' 点击查看>> </a></p>'+
 					'</td>'+
 					'<td width="20%">'+
 						'<p>速度：'+item.speed+'km/h</p>'+
@@ -72,6 +81,23 @@ function getData(page) {
 
 function searchCar() {
 	getData(1);
+}
+
+///  打开地图查看，车辆位置
+function openMap(sn) {
+	//iframe窗
+
+	layer.open({
+		type: 2,
+		title: '查看车辆位置',
+		shadeClose: true,
+		shade: false,
+		maxmin: false, //开启最大化最小化按钮
+		area: ['893px', '600px'],
+		content: ['/backstage/openmap?sn='+sn,'no']
+	});
+
+
 }
 
 /**
