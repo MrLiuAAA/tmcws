@@ -25,13 +25,19 @@
 			 <div class="locusTime">
 				 <div class="option">
 					 <label>选择车辆</label>
-					 <select id="mycar">
-						 <!--<option value="1">法拉利1号</option>-->
-						 <!--<option value="1">法拉利2号</option>-->
-						 <!--<option value="1">法拉利3号</option>-->
-						 <!--<option value="1">法拉利4号</option>-->
-					 </select>
+					 <span id="select_car_name"></span>
+					 <a href="javascript:void(0)" onclick="selectCar();" id="select_car_btn">点击选择车辆</a>
 				 </div>
+				 <input type="hidden" id="select_car_id" />
+				 <!--<div class="option">-->
+					 <!--<label>选择车辆</label>-->
+					 <!--<select id="mycar">-->
+						 <!--&lt;!&ndash;<option value="1">法拉利1号</option>&ndash;&gt;-->
+						 <!--&lt;!&ndash;<option value="1">法拉利2号</option>&ndash;&gt;-->
+						 <!--&lt;!&ndash;<option value="1">法拉利3号</option>&ndash;&gt;-->
+						 <!--&lt;!&ndash;<option value="1">法拉利4号</option>&ndash;&gt;-->
+					 <!--</select>-->
+				 <!--</div>-->
 				 <div class="option">
 					 <label>开始时间</label>
 					 <input id="startTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'});" type="text"/>
@@ -80,7 +86,7 @@
 			var width=$(document.body).width()-230;
 			$(".content-wrapper").css({'width':width,'height':height});
 		})
-	})
+	});
 
 	var map = new AMap.Map("container", {
 		resizeEnable : true,

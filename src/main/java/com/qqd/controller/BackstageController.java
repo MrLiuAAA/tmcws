@@ -171,6 +171,18 @@ public class BackstageController extends BaseController<User> {
 		return "openmap";
 	}
 
+	/**
+	 * 选择车辆页面
+	 *
+	 */
+	@RequestMapping("selectcar")
+	public String selectcar(Model model) {
+		return "select_car";
+	}
+
+
+
+
 	@RequestMapping(value = "getcarlocation", method = RequestMethod.POST)
 	@ResponseBody
 	public AjaxRes getcarlocation(String sn) {
@@ -301,9 +313,9 @@ public class BackstageController extends BaseController<User> {
 
 		System.out.println("----------:\n"+JSON.toJSONString(user,true));
 
-		user.setPassword(MD5Util.md5Encode(user.getPassword()));;
+		user.setPassword(MD5Util.md5Encode(user.getPassword()));
 
-		AdminUser u = adminUserService.save(user);
+        AdminUser u = adminUserService.save(user);
 
 		map.put("result", u.getId()!=null ? "success" : "failure");
 		System.out.println(map);
@@ -339,9 +351,9 @@ public class BackstageController extends BaseController<User> {
 		}
 
 
-		user.setPassword(MD5Util.md5Encode(user.getPassword()));;
+		user.setPassword(MD5Util.md5Encode(user.getPassword()));
 
-		User u = userService.addUser(user);
+        User u = userService.addUser(user);
 
 		map.put("result", u.getUserid()!=null ? "success" : "failure");
 		System.out.println(map);

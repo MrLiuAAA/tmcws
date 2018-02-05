@@ -51,9 +51,7 @@
                 <div class="page">
                     <div class="pageList">
                         <nav>
-                            <ul class="pagination" id="pagination">
-
-                            </ul>
+                            <div id="pagination" class="pagination"><!-- 这里显示分页 --></div>
                         </nav>
                     </div>
                 </div>
@@ -94,7 +92,7 @@
     });
     $("#add_cansle").on('click',function(){
         layer.closeAll();
-    })
+    });
     $("#add_submit").on('click',function(){
         var ii = layer.load();
 

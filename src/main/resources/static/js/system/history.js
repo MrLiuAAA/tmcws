@@ -56,7 +56,7 @@ $(function() {
 	 
 	function getTrajectory(){
 		
-		var sn = $("#mycar").val();
+		var sn = $("#select_car_id").val();
 		var startTime = $("#startTime").val();
 		var endTime = $("#endTime").val();
 		
@@ -142,17 +142,32 @@ $(function() {
 		 
 		
 	}
-	
 
-
-	// AMap.event.addDomListener(document.getElementById('start'), 'click',
-	// 		function() {
-	// 			marker.moveAlong(lineArr, 500);
-	// 		}, false);
-	// AMap.event.addDomListener(document.getElementById('stop'), 'click',
-	// 		function() {
-	// 			marker.stopMove();
-	// 		}, false);
 
 
 });
+///  选择车辆 iframe
+function selectCar() {
+	//iframe窗
+
+	layer.open({
+		type: 2,
+		title: '选择车辆',
+		shadeClose: true,
+		shade: false,
+		maxmin: false, //开启最大化最小化按钮
+		area: ['1000px', '950px'],
+		content: ['/backstage/selectcar','no'],
+
+	});
+
+
+
+
+}
+
+function setCar(sn,name){
+	$("#select_car_name").html(name+'('+sn+')');
+	$("#select_car_id").val(sn);
+	$("#select_car_btn").html('重新选择');
+}
